@@ -1,0 +1,5 @@
+# config files
+
+- zsh
+- tmux
+
