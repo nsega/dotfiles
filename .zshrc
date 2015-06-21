@@ -69,9 +69,12 @@ export PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/s
 
 ## export add
 export MANPATH="/usr/local/man:$MANPATH"
-export GOROOT=/usr/local/go
 export GOPATH=$HOME
+export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOROOT/bin
+
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
