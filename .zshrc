@@ -11,6 +11,8 @@ ZSH_THEME="robbyrussell"
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias la='ls -a'
+alias ls='ls -a'
+alias ll='ls -al'
 alias -g ll='ls -al'
 alias rm='rm -i'
 alias cp='cp -i'
@@ -72,6 +74,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 export GOPATH=$HOME
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOROOT/bin
+export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
