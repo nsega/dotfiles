@@ -66,8 +66,8 @@ plugins=(git bunder brew gem rbates)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
 export PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims"
+fpath=(/usr/local/share/zsh-completions $fpath)
 
 ## export add
 export MANPATH="/usr/local/man:$MANPATH"
