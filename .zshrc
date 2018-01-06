@@ -19,6 +19,9 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
+alias g='cd $(ghq root)/$(ghq list | peco)'
+alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias v='code $(ghq root)/$(ghq list | peco)'
 
 # Global Alias
 alias -g L='| less'
