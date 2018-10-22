@@ -13,19 +13,14 @@ alias ohmyzsh="mate ~/.oh-my-zsh"
 alias la='ls -a'
 alias ls='ls -a'
 alias ll='ls -al'
-alias -g ll='ls -al'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
-alias g='cd $(ghq root)/$(ghq list | peco)'
+alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code $(ghq root)/$(ghq list | peco)'
-
-# Global Alias
-alias -g L='| less'
-alias -g G='| grep'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -64,27 +59,29 @@ alias -g G='| grep'
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git bunder brew gem rbates)
+plugins=(git bunder brew gem rbates aws cf docekr docker-compose boot2docker kubectl minikube go golang)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims"
 fpath=(/usr/local/share/zsh-completions $fpath)
+eval "$(rbenv init -)"
 
 ## export add
 export MANPATH="/usr/local/man:$MANPATH"
 export GOPATH=$HOME
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOROOT/bin
-export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
+export PATH=/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:$PATH
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-export LANG=ja_JP.UTF-8
+export LANG=en_US.UTF-8
+# export LANG=ja_JP.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -105,29 +102,44 @@ export LANG=ja_JP.UTF-8
 # Setting the emacs key-bind
 bindkey -e
 
-# History Settings
+# Setting history
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
-# compeltion after sudo
+
+# compelting the command name after sudo command 
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
                    /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
-# ps command completion
+# completing the process name of ps command
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# Option Settings for zsh
+# Visible Japanese file name
 setopt print_eight_bit
+
+# Disable beep sound
 setopt no_beep
+
+# Disable flow_control
 setopt no_flow_control
+
+# '#' interactive comments
 setopt interactive_comments
+
+# cd by using only directory name
 setopt auto_cd
+
+# pushd automatically after cd
 setopt auto_pushd
+# ignore duplicated directory
 setopt pushd_ignore_dups
+
+# completing the path name after '='
 setopt magic_equal_subst
+
 setopt share_history
 setopt hist_ignore_all_dups
 setopt hist_save_nodups
@@ -136,6 +148,17 @@ setopt hist_reduce_blanks
 setopt auto_menu
 setopt extended_glob
 
-# key-bind
 bindkey '^R' history-incremental-pattern-search-backward
+
+# mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
+if which pbcopy >/dev/null 2>&1 ; then
+    # Mac
+    alias -g C='| pbcopy'
+elif which xsel >/dev/null 2>&1 ; then
+    # Linux
+    alias -g C='| xsel --input --clipboard'
+elif which putclip >/dev/null 2>&1 ; then
+    # Cygwin
+    alias -g C='| putclip'
+fi
 
