@@ -59,22 +59,19 @@ alias v='code $(ghq root)/$(ghq list | peco)'
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git bunder brew gem rbates aws cf docekr docker-compose boot2docker kubectl minikube go golang)
-
-source $ZSH/oh-my-zsh.sh
+plugins=(git bunder brew gem aws docekr docker-compose kubectl golang tmux)
 
 # User configuration
-export PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims"
-fpath=(/usr/local/share/zsh-completions $fpath)
-eval "$(rbenv init -)"
-
 ## export add
 export MANPATH="/usr/local/man:$MANPATH"
 export GOPATH=$HOME
 export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOROOT/bin
-export PATH=/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:$PATH
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export PATH=$GOROOT/bin:$HOME/bin:/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims
+fpath=(/usr/local/share/zsh-completions $fpath)
+eval "$(rbenv init -)"
+
+source $ZSH/oh-my-zsh.sh
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
@@ -162,3 +159,6 @@ elif which putclip >/dev/null 2>&1 ; then
     alias -g C='| putclip'
 fi
 
+autoload -U compinit compdef
+compinit
+source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
