@@ -162,3 +162,4 @@ fi
 autoload -U compinit compdef
 compinit
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+source <(kubectl completion zsh)
