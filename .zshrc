@@ -10,9 +10,7 @@ ZSH_THEME="robbyrussell"
 # Example aliases
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
-alias la='ls -a'
 alias ls='ls -a'
-alias ll='ls -al'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
