@@ -19,6 +19,7 @@ alias sudo='sudo '
 alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code $(ghq root)/$(ghq list | peco)'
+alias Gl='goland $(ghq root)/$(ghq list | peco)'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -57,7 +58,7 @@ alias v='code $(ghq root)/$(ghq list | peco)'
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git bunder brew gem aws docekr docker-compose kubectl golang tmux)
+plugins=(git bundler brew gem aws docker docker-compose kubectl golang tmux)
 
 # User configuration
 ## export add
@@ -65,7 +66,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 export GOPATH=$HOME
 export GOROOT=/usr/local/opt/go/libexec
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-export PATH=$GOROOT/bin:$HOME/bin:/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:/usr/local/heroku/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims
+export PATH=$GOROOT/bin:$HOME/bin:/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:/usr/local/heroku/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims:$PATH
 fpath=(/usr/local/share/zsh-completions $fpath)
 eval "$(rbenv init -)"
 
@@ -161,3 +162,5 @@ autoload -U compinit compdef
 compinit
 source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 source <(kubectl completion zsh)
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
