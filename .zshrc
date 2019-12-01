@@ -1,3 +1,8 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/usr/local/opt/python/libexec/bin:$HOME/bin:/usr/local/bin:/usr/local/opt/ncurses/bin:$PATH
+
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -8,8 +13,6 @@ export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="robbyrussell"
 
 # Example aliases
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ls='ls -a'
 alias rm='rm -i'
 alias cp='cp -i'
@@ -40,7 +43,7 @@ alias Gl='goland $(ghq root)/$(ghq list | peco)'
 # DISABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -58,17 +61,20 @@ alias Gl='goland $(ghq root)/$(ghq list | peco)'
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git bundler brew gem aws docker docker-compose kubectl golang tmux)
+plugins=(git brew gem aws docker kubectl go golang tmux kubetail)
 
 # User configuration
 ## export add
-export MANPATH="/usr/local/man:$MANPATH"
 export GOPATH=$HOME
 export GOROOT=/usr/local/opt/go/libexec
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-export PATH=$GOROOT/bin:$HOME/bin:/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:/usr/local/heroku/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims:$PATH
+export PATH=$GOROOT/bin:$PATH
 fpath=(/usr/local/share/zsh-completions $fpath)
 eval "$(rbenv init -)"
+
+## export configuration for direnv
+export EDITOR=/usr/bin/vi
+eval "$(direnv hook zsh)"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -77,7 +83,6 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-# export LANG=ja_JP.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -92,9 +97,6 @@ export LANG=en_US.UTF-8
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
 # Setting the emacs key-bind
 bindkey -e
 
@@ -107,8 +109,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
 
 # compelting the command name after sudo command 
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
-                   /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 # completing the process name of ps command
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
