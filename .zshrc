@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=/usr/local/opt/python/libexec/bin:$HOME/bin:/usr/local/bin:/usr/local/opt/ncurses/bin:$PATH
+export PATH=${KREW_ROOT:-$HOME/.krew}/bin:/usr/local/opt/python/libexec/bin:$HOME/bin:/usr/local/bin:/usr/local/opt/ncurses/bin:$PATH
 
 
 # Path to your oh-my-zsh installation.
@@ -68,12 +68,8 @@ plugins=(git brew gem aws docker kubectl go golang tmux kubetail)
 export GOPATH=$HOME
 export GOROOT=/usr/local/opt/go/libexec
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-<<<<<<< HEAD
 export PATH=$GOROOT/bin:$PATH
-=======
-export PATH=${KREW_ROOT:-$HOME/.krew}/bin:$GOROOT/bin:$HOME/bin:/usr/local/opt/icu4c/bin:/usr/local/opt/icu4c/sbin:/usr/local/opt/gnu-tar/libexec/gnubin:/usr/local/heroku/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.nodebrew/current/bin:/usr/local/pear/bin:$HOME/.rbenv/shims:$PATH
 
->>>>>>> add the KREW_ROOT into .zshrc
 fpath=(/usr/local/share/zsh-completions $fpath)
 eval "$(rbenv init -)"
 
