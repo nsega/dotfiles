@@ -59,8 +59,6 @@ ZSH_DISABLE_COMPFIX="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git brew gem aws docker go golang tmux kubectl kubetail)
 
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 ## export add
@@ -114,6 +112,8 @@ alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code $(ghq root)/$(ghq list | peco)'
 alias Gl='goland $(ghq root)/$(ghq list | peco)'
+
+source $ZSH/oh-my-zsh.sh
 
 # Setting the emacs key-bind
 bindkey -e
