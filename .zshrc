@@ -1,7 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=${KREW_ROOT:-$HOME/.krew}/bin:/usr/local/opt/python/libexec/bin:$HOME/bin:/usr/local/bin:/usr/local/opt/ncurses/bin:$PATH
-
+export PATH="$HOME/.krew/bin:/usr/local/sbin:/usr/local/opt/python/libexec/bin:$HOME/bin:/usr/local/bin:/usr/local/opt/ncurses/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -12,18 +11,6 @@ export ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="robbyrussell"
 
-# Example aliases
-alias ls='ls -a'
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias mkdir='mkdir -p'
-alias sudo='sudo '
-alias p='cd $(ghq root)/$(ghq list | peco)'
-alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
-alias v='code $(ghq root)/$(ghq list | peco)'
-alias Gl='goland $(ghq root)/$(ghq list | peco)'
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -31,7 +18,7 @@ alias Gl='goland $(ghq root)/$(ghq list | peco)'
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -52,35 +39,48 @@ COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Uncomment the following line if you want to activate
+# insecure directories you can set the variable
+ZSH_DISABLE_COMPFIX="true"
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git brew gem aws docker kubectl go golang tmux kubetail)
-
-# User configuration
-## export add
-export GOPATH=$HOME
-export GOROOT=/usr/local/opt/go/libexec
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-export PATH=$GOROOT/bin:$PATH
-
-fpath=(/usr/local/share/zsh-completions $fpath)
-eval "$(rbenv init -)"
-
-## export configuration for direnv
-export EDITOR=/usr/bin/vi
-eval "$(direnv hook zsh)"
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git brew gem aws docker go golang tmux kubectl kubetail)
 
 source $ZSH/oh-my-zsh.sh
 
-# pyenv
+# User configuration
+
+## export add
+export GOPATH=$HOME
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$GOROOT/bin:$PATH
+
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+# Set the configuration for rbenv
+eval "$(rbenv init -)"
+
+# Set the configuration for direnv
+export EDITOR=/usr/bin/vi
+eval "$(direnv hook zsh)"
+
+# Set the configuration for pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -95,8 +95,25 @@ export LANG=en_US.UTF-8
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+alias zshconfig="mate ~/.zshrc"
+alias ohmyzsh="mate ~/.oh-my-zsh"
+alias ls='ls -a'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias mkdir='mkdir -p'
+alias sudo='sudo '
+alias C='| pbcopy'
+alias p='cd $(ghq root)/$(ghq list | peco)'
+alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias v='code $(ghq root)/$(ghq list | peco)'
+alias Gl='goland $(ghq root)/$(ghq list | peco)'
 
 # Setting the emacs key-bind
 bindkey -e
@@ -147,18 +164,6 @@ setopt auto_menu
 setopt extended_glob
 
 bindkey '^R' history-incremental-pattern-search-backward
-
-# mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
-if which pbcopy >/dev/null 2>&1 ; then
-    # Mac
-    alias -g C='| pbcopy'
-elif which xsel >/dev/null 2>&1 ; then
-    # Linux
-    alias -g C='| xsel --input --clipboard'
-elif which putclip >/dev/null 2>&1 ; then
-    # Cygwin
-    alias -g C='| putclip'
-fi
 
 autoload -U compinit compdef
 compinit
