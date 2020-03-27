@@ -57,7 +57,7 @@ ZSH_DISABLE_COMPFIX="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew gem aws docker go golang tmux kubectl kubetail)
+plugins=(git brew gem aws docker go golang tmux kubectl kubetail kube-ps1)
 
 # User configuration
 
@@ -114,6 +114,9 @@ alias v='code $(ghq root)/$(ghq list | peco)'
 alias Gl='goland $(ghq root)/$(ghq list | peco)'
 
 source $ZSH/oh-my-zsh.sh
+
+PROMPT=$PROMPT'$(kube_ps1) '
+
 
 # Setting the emacs key-bind
 bindkey -e
