@@ -190,7 +190,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 autoload -U compinit compdef
 compinit
 source <(kubectl completion zsh)
-source <(stern completion zsh)
+source <(stern --completion=zsh)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
