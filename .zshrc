@@ -1,7 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/usr/local/opt/openjdk/bin::$HOME/.krew/bin:/usr/local/sbin:/usr/local/opt/python/libexec/bin:$HOME/bin:/usr/local/bin:/usr/local/opt/ncurses/bin:$PATH"
-export PATH=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/platform/google_appengine:$PATH
+export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -64,13 +63,25 @@ plugins=(git brew gem aws docker golang tmux kubectl kubetail kube-ps1)
 
 ## export add
 export GOPATH=$HOME
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$GOROOT/bin:$PATH
+export GOROOT=/opt/homebrew/opt/go/libexec
+#export CLOUDSDK_PYTHON=$(brew --prefix python@3.8)/bin/python3
+export CLOUDSDK_PYTHON=python2
+export PYENV_ROOT=$HOME/.pyenv
+export NODENV_ROOT=$HOME/.nodenv
+export PATH=$GOROOT/bin:$PYENV_ROOT/bin:$NODENV_ROOT/bin:$PATH
+
+export GUILE_LOAD_PATH="/opt/homebrew/share/guile/site/3.0"
+export GUILE_LOAD_COMPILED_PATH="/opt/homebrew/lib/guile/3.0/site-ccache"
+export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
+
+export GPG_TTY=$(tty)
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# Set the configuration for rbenv
+# Set the configuration for rbenv, nodenv and pyenv
 eval "$(rbenv init -)"
+eval "$(nodenv init -)"
+eval "$(pyenv init -)"
 
 # Set the configuration for direnv
 export EDITOR=/usr/bin/vi
@@ -111,12 +122,19 @@ alias sudo='sudo '
 alias C='| pbcopy'
 alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
-alias v='code $(ghq root)/$(ghq list | peco)'
+alias v='code-insiders $(ghq root)/$(ghq list | peco)'
+alias V='code $(ghq root)/$(ghq list | peco)'
 alias Gl='goland $(ghq root)/$(ghq list | peco)'
+alias i='idea $(ghq root)/$(ghq list | peco)'
+
+# For Mac apple silicon
+# alias brew='arch -x86_64 /opt/homebrew/bin/brew'
+alias x64='exec arch -x86_64 "$SHELL"'
+alias a64='exec arch -arm64e "$SHELL"'
 
 source $ZSH/oh-my-zsh.sh
 
-PROMPT=$PROMPT'$(kube_ps1) '
+PROMPT=$PROMPT'$(kube_ps1) (`uname -m`) '
 
 
 # Setting the emacs key-bind
@@ -171,8 +189,8 @@ bindkey '^R' history-incremental-pattern-search-backward
 
 autoload -U compinit compdef
 compinit
-source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 source <(kubectl completion zsh)
+source <(stern completion zsh)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -188,3 +206,10 @@ function peco-checkout-pull-request () {
 zle -N peco-checkout-pull-request
 
 bindkey "^g^p" peco-checkout-pull-request
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'; fi
