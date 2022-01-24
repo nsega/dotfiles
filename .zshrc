@@ -66,12 +66,22 @@ export GOPATH=$HOME
 export GOROOT=/opt/homebrew/opt/go/libexec
 #export CLOUDSDK_PYTHON=$(brew --prefix python@3.8)/bin/python3
 export CLOUDSDK_PYTHON=python2
-export PATH=$GOROOT/bin:$PATH
+export PYENV_ROOT=$HOME/.pyenv
+export NODENV_ROOT=$HOME/.nodenv
+export PATH=$GOROOT/bin:$PYENV_ROOT/bin:$NODENV_ROOT/bin:$PATH
+
+export GUILE_LOAD_PATH="/opt/homebrew/share/guile/site/3.0"
+export GUILE_LOAD_COMPILED_PATH="/opt/homebrew/lib/guile/3.0/site-ccache"
+export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
+
+export GPG_TTY=$(tty)
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# Set the configuration for rbenv
+# Set the configuration for rbenv, nodenv and pyenv
 eval "$(rbenv init -)"
+eval "$(nodenv init -)"
+eval "$(pyenv init -)"
 
 # Set the configuration for direnv
 export EDITOR=/usr/bin/vi
@@ -115,6 +125,7 @@ alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code-insiders $(ghq root)/$(ghq list | peco)'
 alias V='code $(ghq root)/$(ghq list | peco)'
 alias Gl='goland $(ghq root)/$(ghq list | peco)'
+alias i='idea $(ghq root)/$(ghq list | peco)'
 
 # For Mac apple silicon
 # alias brew='arch -x86_64 /opt/homebrew/bin/brew'
@@ -179,6 +190,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 autoload -U compinit compdef
 compinit
 source <(kubectl completion zsh)
+source <(stern completion zsh)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
