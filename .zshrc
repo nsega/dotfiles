@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
+export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
+export PATH="$HOME/.pyenv/shims/python:$PATH"
+export PATH="$HOME/.nodenv/shims/node:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -57,28 +60,18 @@ ZSH_DISABLE_COMPFIX="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew gem aws docker golang tmux kubectl kubetail kube-ps1)
+plugins=(git brew gem aws docker golang tmux kubectl kubetail kube-ps1 terraform)
 
 # User configuration
 
-## export add
+# Add export connfiguration
 export GOPATH=$HOME
 export GOROOT=/opt/homebrew/opt/go/libexec
-#export CLOUDSDK_PYTHON=$(brew --prefix python@3.8)/bin/python3
-export CLOUDSDK_PYTHON=python2
-export PYENV_ROOT=$HOME/.pyenv
-export NODENV_ROOT=$HOME/.nodenv
-export PATH=$GOROOT/bin:$PYENV_ROOT/bin:$NODENV_ROOT/bin:$PATH
-
-export GUILE_LOAD_PATH="/opt/homebrew/share/guile/site/3.0"
-export GUILE_LOAD_COMPILED_PATH="/opt/homebrew/lib/guile/3.0/site-ccache"
-export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
-
+export PATH=$GOROOT/bin:$PATH
+export CLOUDSDK_PYTHON=$(brew --prefix python@3.8)/bin/python3
 export GPG_TTY=$(tty)
 
-fpath=(/usr/local/share/zsh-completions $fpath)
-
-# Set the configuration for rbenv, nodenv and pyenv
+# Set the configuration for rbenv, nodenv, and pyenv
 eval "$(rbenv init -)"
 eval "$(nodenv init -)"
 eval "$(pyenv init -)"
@@ -122,20 +115,13 @@ alias sudo='sudo '
 alias C='| pbcopy'
 alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
-alias v='code-insiders $(ghq root)/$(ghq list | peco)'
-alias V='code $(ghq root)/$(ghq list | peco)'
+alias v='code $(ghq root)/$(ghq list | peco)'
 alias Gl='goland $(ghq root)/$(ghq list | peco)'
 alias i='idea $(ghq root)/$(ghq list | peco)'
 
-# For Mac apple silicon
-# alias brew='arch -x86_64 /opt/homebrew/bin/brew'
-alias x64='exec arch -x86_64 "$SHELL"'
-alias a64='exec arch -arm64e "$SHELL"'
-
 source $ZSH/oh-my-zsh.sh
 
-PROMPT=$PROMPT'$(kube_ps1) (`uname -m`) '
-
+PROMPT=$PROMPT'$(kube_ps1) '
 
 # Setting the emacs key-bind
 bindkey -e
@@ -187,13 +173,6 @@ setopt extended_glob
 
 bindkey '^R' history-incremental-pattern-search-backward
 
-autoload -U compinit compdef
-compinit
-source <(kubectl completion zsh)
-source <(stern --completion=zsh)
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 # peco + gh configuration
 function peco-checkout-pull-request () {
     local selected_pr_id=$(gh pr list | peco | awk '{ print $1 }')
@@ -207,9 +186,26 @@ zle -N peco-checkout-pull-request
 
 bindkey "^g^p" peco-checkout-pull-request
 
+autoload -U compinit compdef
+compinit
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'; fi
+# install the shell completions of google-cloud-sdk
+source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+# add gcloud components of google-cloud-sdk to my PATH
+source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source <(kubectl completion zsh)
+source <(stern --completion=zsh)
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'; fi
+# activate the autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# activate zsh-completions
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
+# activate the syntax highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
