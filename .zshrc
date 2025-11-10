@@ -67,9 +67,14 @@ plugins=(git brew gem aws docker golang tmux kubectl kubetail kube-ps1 terraform
 # Add export connfiguration
 export GOPATH=$HOME
 export GOROOT=/opt/homebrew/opt/go/libexec
+export GOMODCACHE=$GOPATH/pkg/mod
+export GOTOOLCHAIN=auto
 export PATH=$GOROOT/bin:$PATH
-export CLOUDSDK_PYTHON=$(brew --prefix python@3.8)/bin/python3
+export CLOUDSDK_PYTHON=$HOME/.pyenv/shims/python3
 export GPG_TTY=$(tty)
+
+export VOLTA_HOME=$HOME/.volta
+export PATH=$VOLTA_HOME/bin:$PATH
 
 # Set the configuration for rbenv, nodenv, and pyenv
 eval "$(rbenv init -)"
@@ -116,8 +121,10 @@ alias C='| pbcopy'
 alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code $(ghq root)/$(ghq list | peco)'
+alias c='cursor $(ghq root)/$(ghq list | peco)'
 alias Gl='goland $(ghq root)/$(ghq list | peco)'
 alias i='idea $(ghq root)/$(ghq list | peco)'
+alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
 
 source $ZSH/oh-my-zsh.sh
 
@@ -209,3 +216,6 @@ fi
 
 # activate the syntax highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+
+. "$HOME/.local/bin/env"
