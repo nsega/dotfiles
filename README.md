@@ -68,7 +68,8 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
     - `Ctrl+T > L`: Split right
     - `Ctrl+T > F`: Toggle split zoom (maximize/restore)
   - **Navigation**:
-    - `Ctrl+T > Arrow Keys`: Navigate between splits
+    - `Shift+Arrow Keys`: Quick navigation between splits
+    - `Ctrl+T > Arrow Keys`: Navigate between splits (prefix style)
     - `Ctrl+T > H/J/K/L`: Vim-style split navigation
   - **Tab Management**:
     - `Ctrl+T > N`: Next tab
@@ -215,9 +216,10 @@ source ~/.zshrc
 - Launch Ghostty from Applications or via `ghostty` command
 - Configuration loads automatically from `~/.config/ghostty/config`
 
-**Split Management (tmux-style prefix):**
+**Split Management:**
 - `Ctrl+T > H/J/K/L`: Create splits left/down/up/right (vim-style)
-- `Ctrl+T > Arrow Keys`: Navigate between splits
+- `Shift+Arrow Keys`: Quick navigation between splits
+- `Ctrl+T > Arrow Keys`: Navigate between splits (prefix style)
 - `Ctrl+T > F`: Toggle split zoom (maximize/restore current split)
 - Mouse click to focus a split
 
