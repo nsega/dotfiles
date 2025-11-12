@@ -59,15 +59,26 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
 
 - **Default Shell**: Zsh with native shell integration
 - **Mouse Support**: Enabled with native clipboard integration
-- **Key Bindings**:
-  - `Ctrl+Shift+V`: Split vertically (down)
-  - `Ctrl+Shift+H`: Split horizontally (right)
-  - `Shift+Arrow`: Navigate between splits
-  - `Ctrl+T`: Next tab
-  - `Ctrl+Shift+T`: New tab
-  - `Ctrl+Shift+C`: Copy to clipboard
-  - `Ctrl+Shift+V`: Paste from clipboard
-  - `Ctrl+Shift+R`: Reload configuration
+- **Prefix Key**: `Ctrl+T` (matching tmux configuration)
+- **Key Bindings** (chord-based like tmux):
+  - **Split Management**:
+    - `Ctrl+T > H`: Split left
+    - `Ctrl+T > J`: Split down
+    - `Ctrl+T > K`: Split up
+    - `Ctrl+T > L`: Split right
+    - `Ctrl+T > F`: Toggle split zoom (maximize/restore)
+  - **Navigation**:
+    - `Ctrl+T > Arrow Keys`: Navigate between splits
+    - `Ctrl+T > H/J/K/L`: Vim-style split navigation
+  - **Tab Management**:
+    - `Ctrl+T > N`: Next tab
+    - `Ctrl+T > P`: Previous tab
+    - `Ctrl+T > C`: Create new tab
+  - **Clipboard**:
+    - `Ctrl+T > Shift+C`: Copy to clipboard
+    - `Ctrl+T > V`: Paste from clipboard
+  - **Configuration**:
+    - `Ctrl+T > R`: Reload configuration
 - **Scrollback**: 5000 lines
 - **Terminal**: 256 color support (xterm-256color)
 - **Features**: GPU-accelerated rendering, native split panes, session management
@@ -204,26 +215,29 @@ source ~/.zshrc
 - Launch Ghostty from Applications or via `ghostty` command
 - Configuration loads automatically from `~/.config/ghostty/config`
 
-**Split Management:**
-- `Ctrl+Shift+V`: Create vertical split (split down)
-- `Ctrl+Shift+H`: Create horizontal split (split right)
-- `Shift+Arrow Keys`: Navigate between splits
+**Split Management (tmux-style prefix):**
+- `Ctrl+T > H/J/K/L`: Create splits left/down/up/right (vim-style)
+- `Ctrl+T > Arrow Keys`: Navigate between splits
+- `Ctrl+T > F`: Toggle split zoom (maximize/restore current split)
 - Mouse click to focus a split
 
 **Tab Management:**
-- `Ctrl+T`: Switch to next tab
-- `Ctrl+Shift+T`: Create new tab
+- `Ctrl+T > N`: Switch to next tab
+- `Ctrl+T > P`: Switch to previous tab
+- `Ctrl+T > C`: Create new tab
 - Mouse click on tab bar to switch tabs
 
 **Clipboard Operations:**
-- `Ctrl+Shift+C`: Copy selected text to clipboard
-- `Ctrl+Shift+V`: Paste from clipboard
+- `Ctrl+T > Shift+C`: Copy selected text to clipboard
+- `Ctrl+T > V`: Paste from clipboard
 - Native macOS clipboard integration (no reattach-to-user-namespace needed)
 
 **Configuration:**
-- `Ctrl+Shift+R`: Reload configuration without restarting
+- `Ctrl+T > R`: Reload configuration without restarting
 - Edit `~/dotfiles/ghostty/config` to customize settings
 - Changes take effect immediately after reload
+
+**Note:** The `>` symbol indicates a chord sequence - press `Ctrl+T`, release, then press the next key (similar to tmux prefix behavior)
 
 **Benefits over tmux:**
 - GPU-accelerated rendering for better performance
