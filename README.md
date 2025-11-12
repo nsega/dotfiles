@@ -6,6 +6,7 @@ Personal configuration files for macOS, optimized for DevOps and cloud engineeri
 
 - **`.zshrc`** - Zsh shell configuration with Oh My Zsh framework
 - **`.tmux.conf`** - Tmux terminal multiplexer configuration
+- **`ghostty/config`** - Ghostty terminal emulator configuration (tmux alternative)
 
 ## Features
 
@@ -52,6 +53,25 @@ Personal configuration files for macOS, optimized for DevOps and cloud engineeri
 - **History**: 5000 lines
 - **Copy/Paste**: Ctrl-C/Ctrl-V for clipboard operations
 
+### Ghostty Configuration
+
+Modern GPU-accelerated terminal emulator with native multiplexing (alternative to tmux):
+
+- **Default Shell**: Zsh with native shell integration
+- **Mouse Support**: Enabled with native clipboard integration
+- **Key Bindings**:
+  - `Ctrl+Shift+V`: Split vertically (down)
+  - `Ctrl+Shift+H`: Split horizontally (right)
+  - `Shift+Arrow`: Navigate between splits
+  - `Ctrl+T`: Next tab
+  - `Ctrl+Shift+T`: New tab
+  - `Ctrl+Shift+C`: Copy to clipboard
+  - `Ctrl+Shift+V`: Paste from clipboard
+  - `Ctrl+Shift+R`: Reload configuration
+- **Scrollback**: 5000 lines
+- **Terminal**: 256 color support (xterm-256color)
+- **Features**: GPU-accelerated rendering, native split panes, session management
+
 ## Requirements
 
 ### Core Dependencies
@@ -62,8 +82,9 @@ Personal configuration files for macOS, optimized for DevOps and cloud engineeri
 
 ### Recommended Packages
 ```bash
-# Terminal multiplexer and utilities
-brew install tmux
+# Terminal emulator and multiplexer
+brew install ghostty              # Modern GPU-accelerated terminal (tmux alternative)
+brew install tmux                 # Traditional terminal multiplexer
 brew install peco
 brew install reattach-to-user-namespace
 
@@ -119,6 +140,10 @@ mv ~/.tmux.conf ~/.tmux.conf.backup
 ```bash
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+
+# For Ghostty configuration
+mkdir -p ~/.config/ghostty
+ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 ```
 
 4. Install Oh My Zsh (if not already installed):
@@ -173,6 +198,40 @@ source ~/.zshrc
 - `Ctrl-T h`: Horizontal split
 - `Shift+Arrow`: Navigate between panes
 
+### Ghostty Usage
+
+**Getting Started:**
+- Launch Ghostty from Applications or via `ghostty` command
+- Configuration loads automatically from `~/.config/ghostty/config`
+
+**Split Management:**
+- `Ctrl+Shift+V`: Create vertical split (split down)
+- `Ctrl+Shift+H`: Create horizontal split (split right)
+- `Shift+Arrow Keys`: Navigate between splits
+- Mouse click to focus a split
+
+**Tab Management:**
+- `Ctrl+T`: Switch to next tab
+- `Ctrl+Shift+T`: Create new tab
+- Mouse click on tab bar to switch tabs
+
+**Clipboard Operations:**
+- `Ctrl+Shift+C`: Copy selected text to clipboard
+- `Ctrl+Shift+V`: Paste from clipboard
+- Native macOS clipboard integration (no reattach-to-user-namespace needed)
+
+**Configuration:**
+- `Ctrl+Shift+R`: Reload configuration without restarting
+- Edit `~/dotfiles/ghostty/config` to customize settings
+- Changes take effect immediately after reload
+
+**Benefits over tmux:**
+- GPU-accelerated rendering for better performance
+- Native split panes without separate multiplexer process
+- Direct clipboard integration without additional tools
+- Modern UI with mouse support out of the box
+- Session persistence built-in
+
 ## Configuration Details
 
 ### Environment Variables
@@ -209,6 +268,11 @@ Feel free to fork and customize these configurations for your own needs:
 - Modify the theme in `.zshrc` by changing `ZSH_THEME`
 - Add/remove Oh My Zsh plugins in the `plugins` array
 - Adjust tmux prefix key in `.tmux.conf`
+- Customize Ghostty appearance and behavior in `ghostty/config`:
+  - Change `font-family` and `font-size` for different fonts
+  - Modify `theme` for different color schemes
+  - Adjust keybindings to match your workflow
+  - Configure `background-opacity` for transparency effects
 - Add your own aliases and functions to `.zshrc`
 - Update Python version in `CLOUDSDK_PYTHON` if using different Python version
 
