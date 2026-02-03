@@ -2,7 +2,6 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$HOME/.pyenv/shims/python:$PATH"
-export PATH="$HOME/.nodenv/shims/node:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
@@ -76,9 +75,8 @@ export GPG_TTY=$(tty)
 export VOLTA_HOME=$HOME/.volta
 export PATH=$VOLTA_HOME/bin:$PATH
 
-# Set the configuration for rbenv, nodenv, and pyenv
+# Set the configuration for rbenv and pyenv
 eval "$(rbenv init -)"
-eval "$(nodenv init -)"
 eval "$(pyenv init -)"
 
 # Set the configuration for direnv
@@ -141,7 +139,7 @@ SAVEHIST=1000000
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
 
-# compelting the command name after sudo command 
+# compelting the command name after sudo command
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 # completing the process name of ps command
@@ -213,6 +211,8 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
+
+eval "$(pixi completion --shell zsh)"
 
 # activate the syntax highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
