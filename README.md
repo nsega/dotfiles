@@ -80,6 +80,16 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
     - `Ctrl+T > V`: Paste from clipboard
   - **Configuration**:
     - `Ctrl+T > R`: Reload configuration
+  - **Emacs Mode** (press `Alt+E` to activate):
+    - `Ctrl+N/P`: Scroll line down/up
+    - `Ctrl+V`: Page down
+    - `Alt+V`: Page up
+    - `Alt+<` / `Alt+>`: Jump to top/bottom
+    - `Ctrl+S`: Start search
+    - `Ctrl+R`: Previous search result
+    - `Alt+W`: Copy to clipboard
+    - `Alt+X`: Command palette
+    - `Ctrl+G` or `Escape`: Exit emacs mode
 - **Scrollback**: 5000 lines
 - **Terminal**: 256 color support (xterm-256color)
 - **Features**: GPU-accelerated rendering, native split panes, session management
