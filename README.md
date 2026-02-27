@@ -1,20 +1,24 @@
 # Dotfiles
 
-Personal configuration files for macOS, optimized for DevOps and cloud engineering workflows.
+Personal configuration files for macOS (Apple Silicon), optimized for DevOps and cloud engineering workflows.
 
 ## Contents
 
 - **`.zshrc`** - Zsh shell configuration with Oh My Zsh framework
 - **`.tmux.conf`** - Tmux terminal multiplexer configuration
 - **`ghostty/config`** - Ghostty terminal emulator configuration (tmux alternative)
+- **`.env.tpl`** - 1Password secret references (safe to commit, no actual secrets)
+- **`.gitignore`** - Git ignore rules
 
 ## Features
 
 ### Zsh Configuration
 
 - **Framework**: Oh My Zsh with `robbyrussell` theme
-- **Version Managers**: rbenv, nodenv, pyenv, direnv
-- **Plugins**: git, brew, gem, aws, docker, golang, tmux, kubectl, kubetail, terraform
+- **Version Managers**: rbenv, pyenv, direnv
+- **Node.js**: Volta (primary), npm-global
+- **Python**: pixi, micromamba (conda environments via `.conda_config`)
+- **Plugins**: git, brew, gem, aws, docker, golang, tmux, kubectl, kubetail, kube-ps1, terraform
 - **Cloud Tools**: Google Cloud SDK, AWS CLI
 - **Kubernetes**: kubectl, stern, kube-ps1 for context display in prompt
 - **Developer Tools**:
@@ -26,8 +30,8 @@ Personal configuration files for macOS, optimized for DevOps and cloud engineeri
   - `p`: Navigate to projects using ghq + peco
   - `b`: Browse GitHub repository using hub + peco
   - `v`: Open project in VS Code using ghq + peco
-  - `Gl`: Open project in GoLand IDE
-  - `i`: Open project in IntelliJ IDEA
+  - `c`: Open project in Cursor using ghq + peco
+  - `ge`: Open Emacs in Ghostty
   - `C`: Pipe output to clipboard (pbcopy)
   - Safety aliases: `rm -i`, `cp -i`, `mv -i`, `mkdir -p`
 - **Enhanced Features**:
@@ -37,6 +41,7 @@ Personal configuration files for macOS, optimized for DevOps and cloud engineeri
   - Auto-cd by directory name
   - Japanese file name support
   - Emacs-style keybindings
+  - Docker CLI completions
 
 ### Tmux Configuration
 
@@ -52,6 +57,9 @@ Personal configuration files for macOS, optimized for DevOps and cloud engineeri
   - `Prefix + r`: Reload config
 - **History**: 5000 lines
 - **Copy/Paste**: Ctrl-C/Ctrl-V for clipboard operations
+- **Plugins** (via TPM):
+  - tmux-resurrect (session save/restore)
+  - tmux-continuum (auto-save every 15 min)
 
 ### Ghostty Configuration
 
@@ -67,10 +75,11 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
     - `Ctrl+T > K`: Split up
     - `Ctrl+T > L`: Split right
     - `Ctrl+T > F`: Toggle split zoom (maximize/restore)
+    - `Ctrl+T > O`: Cycle through splits
+    - `Ctrl+T > Space`: Equalize split sizes
   - **Navigation**:
     - `Shift+Arrow Keys`: Quick navigation between splits
     - `Ctrl+T > Arrow Keys`: Navigate between splits (prefix style)
-    - `Ctrl+T > H/J/K/L`: Vim-style split navigation
   - **Tab Management**:
     - `Ctrl+T > N`: Next tab
     - `Ctrl+T > P`: Previous tab
@@ -78,21 +87,49 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
   - **Clipboard**:
     - `Ctrl+T > Shift+C`: Copy to clipboard
     - `Ctrl+T > V`: Paste from clipboard
-  - **Configuration**:
+  - **Scrollback Navigation** (emacs-style, prefix-based):
+    - `Ctrl+T > Ctrl+N`: Scroll down one line
+    - `Ctrl+T > Ctrl+P`: Scroll up one line
+    - `Ctrl+T > Ctrl+V`: Page down
+    - `Ctrl+T > Alt+V`: Page up
+    - `Ctrl+T > Alt+<`: Scroll to top
+    - `Ctrl+T > Alt+>`: Scroll to bottom
+  - **Other**:
+    - `Ctrl+T > Alt+X`: Command palette
     - `Ctrl+T > R`: Reload configuration
-  - **Emacs Mode** (press `Alt+E` to activate):
-    - `Ctrl+N/P`: Scroll line down/up
-    - `Ctrl+V`: Page down
-    - `Alt+V`: Page up
-    - `Alt+<` / `Alt+>`: Jump to top/bottom
-    - `Ctrl+S`: Start search
-    - `Ctrl+R`: Previous search result
-    - `Alt+W`: Copy to clipboard
-    - `Alt+X`: Command palette
-    - `Ctrl+G` or `Escape`: Exit emacs mode
-- **Scrollback**: 5000 lines
+- **Scrollback**: 100,000 lines
 - **Terminal**: 256 color support (xterm-256color)
-- **Features**: GPU-accelerated rendering, native split panes, session management
+- **Font**: Monaco, 12pt (ligatures disabled)
+- **Features**: GPU-accelerated rendering, native split panes, auto-update checks
+
+## Secret Management
+
+Secrets are managed via **1Password CLI** (`op`) using a template-based approach:
+
+- `.env.tpl` contains `op://` references (no actual secrets) — safe to commit
+- At shell startup, `op inject` resolves references and exports environment variables
+- Touch ID authenticates once per session
+
+### Adding a new secret
+
+1. Store the secret in 1Password (vault: `Private`, account: `my.1password.com`)
+2. Add a line to `.env.tpl`:
+   ```
+   export MY_SECRET={{ op://Private/item-name/password }}
+   ```
+3. Reload shell: `source ~/.zshrc`
+
+### Finding 1Password item paths
+
+```bash
+op item list --account=my.1password.com | grep -i <keyword>
+op item get "<item-name>" --account=my.1password.com
+```
+
+## Pre-commit Hooks
+
+- **gitleaks** scans staged changes for accidental secret commits
+- Install: `brew install gitleaks`
 
 ## Requirements
 
@@ -112,9 +149,12 @@ brew install reattach-to-user-namespace
 
 # Version managers
 brew install rbenv
-brew install nodenv
 brew install pyenv
 brew install direnv
+brew install pixi
+
+# Node.js (Volta)
+curl https://get.volta.sh | bash
 
 # Git and GitHub tools
 brew install ghq
@@ -122,11 +162,23 @@ brew install hub
 
 # Kubernetes tools
 brew install stern
+brew install kube-ps1
 
 # Programming languages
 brew install go
 brew install openjdk
-brew install python@3.8
+
+# Database clients
+brew install postgresql@17
+brew install mysql-client
+
+# GNU utilities
+brew install gnu-sed
+brew install coreutils
+
+# Secret management
+brew install --cask 1password-cli
+brew install gitleaks
 
 # Google Cloud SDK (via Cask)
 brew install --cask google-cloud-sdk
@@ -139,9 +191,6 @@ brew install zsh-syntax-highlighting
 
 # Zsh autosuggestions
 brew install zsh-autosuggestions
-
-# Kube-ps1 for Kubernetes context
-brew install kube-ps1
 ```
 
 ## Installation
@@ -191,7 +240,7 @@ source ~/.zshrc
 - Use `p` alias to navigate to projects managed by ghq (uses peco for selection)
 - Use `b` alias to browse GitHub repositories in your browser
 - Use `v` alias to open projects in VS Code
-- Use `Gl` or `i` aliases to open projects in GoLand/IntelliJ
+- Use `c` alias to open projects in Cursor
 
 **Kubernetes Context:**
 - Current kubectl context displayed in prompt via kube-ps1
@@ -231,6 +280,8 @@ source ~/.zshrc
 - `Shift+Arrow Keys`: Quick navigation between splits
 - `Ctrl+T > Arrow Keys`: Navigate between splits (prefix style)
 - `Ctrl+T > F`: Toggle split zoom (maximize/restore current split)
+- `Ctrl+T > O`: Cycle through splits
+- `Ctrl+T > Space`: Equalize split sizes
 - Mouse click to focus a split
 
 **Tab Management:**
@@ -244,8 +295,15 @@ source ~/.zshrc
 - `Ctrl+T > V`: Paste from clipboard
 - Native macOS clipboard integration (no reattach-to-user-namespace needed)
 
+**Scrollback Navigation (emacs-style):**
+- `Ctrl+T > Ctrl+N/P`: Scroll down/up one line
+- `Ctrl+T > Ctrl+V`: Page down
+- `Ctrl+T > Alt+V`: Page up
+- `Ctrl+T > Alt+<` / `Alt+>`: Jump to top/bottom
+
 **Configuration:**
 - `Ctrl+T > R`: Reload configuration without restarting
+- `Ctrl+T > Alt+X`: Open command palette
 - Edit `~/dotfiles/ghostty/config` to customize settings
 - Changes take effect immediately after reload
 
@@ -256,7 +314,6 @@ source ~/.zshrc
 - Native split panes without separate multiplexer process
 - Direct clipboard integration without additional tools
 - Modern UI with mouse support out of the box
-- Session persistence built-in
 
 ## Configuration Details
 
@@ -266,7 +323,10 @@ The `.zshrc` configures the following environment variables:
 
 - **GOPATH**: Set to `$HOME`
 - **GOROOT**: Points to Homebrew Go installation
-- **CLOUDSDK_PYTHON**: Uses Python 3.8 from Homebrew
+- **GOMODCACHE**: Set to `$GOPATH/pkg/mod`
+- **GOTOOLCHAIN**: Set to `auto`
+- **VOLTA_HOME**: Set to `$HOME/.volta`
+- **CLOUDSDK_PYTHON**: Uses pyenv Python 3
 - **GPG_TTY**: Configured for GPG signing
 - **EDITOR**: Set to `/usr/bin/vi`
 - **LANG**: Set to `en_US.UTF-8`
@@ -283,9 +343,16 @@ The `.zshrc` configures the following environment variables:
 The configuration adds the following to PATH:
 - `/opt/homebrew/bin` and `/opt/homebrew/sbin`
 - `/opt/homebrew/opt/openjdk/bin` (Java)
+- `/opt/homebrew/opt/openjdk@11/bin` (Java 11)
+- `/opt/homebrew/opt/postgresql@17/bin` (PostgreSQL)
+- `/opt/homebrew/opt/mysql-client/bin` (MySQL)
+- `/opt/homebrew/opt/gnu-sed/libexec/gnubin` (GNU sed)
+- `/opt/homebrew/opt/coreutils/libexec/gnubin` (GNU coreutils)
 - `$HOME/.krew/bin` (kubectl plugins)
+- `$HOME/.volta/bin` (Volta / Node.js)
+- `$HOME/.pixi/bin` (pixi)
+- `$HOME/.npm-global/bin` (npm global packages)
 - `$HOME/.pyenv/shims/python` (Python)
-- `$HOME/.nodenv/shims/node` (Node.js)
 
 ## Customization
 
@@ -300,7 +367,7 @@ Feel free to fork and customize these configurations for your own needs:
   - Adjust keybindings to match your workflow
   - Configure `background-opacity` for transparency effects
 - Add your own aliases and functions to `.zshrc`
-- Update Python version in `CLOUDSDK_PYTHON` if using different Python version
+- Add secrets to `.env.tpl` using 1Password `op://` references
 
 ## License
 
