@@ -1,0 +1,1 @@
+Done. The file is now untracked and gitignored. Your local copy is untouched. You can commit when ready.

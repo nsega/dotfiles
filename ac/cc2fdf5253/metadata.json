@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.4.7",
+  "checkpoint_id": "accc2fdf5253",
+  "strategy": "auto-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".claude/settings.local.json",
+    ".gitignore"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ac/cc2fdf5253/0/metadata.json",
+      "transcript": "/ac/cc2fdf5253/0/full.jsonl",
+      "context": "",
+      "content_hash": "/ac/cc2fdf5253/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 7,
+    "cache_creation_tokens": 35531,
+    "cache_read_tokens": 248658,
+    "output_tokens": 468,
+    "api_call_count": 5
+  }
+}

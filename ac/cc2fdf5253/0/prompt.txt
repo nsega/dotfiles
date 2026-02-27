@@ -1,0 +1,1 @@
+.claude/settings.local.json should not be controled by git
