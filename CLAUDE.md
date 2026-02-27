@@ -11,6 +11,8 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 - `.zshrc` - Zsh configuration with Oh My Zsh framework
 - `.tmux.conf` - Tmux configuration (prefix: `Ctrl-T`)
 - `ghostty/config` - Ghostty terminal emulator (tmux alternative with native splits)
+- `.env.tpl` - 1Password secret references (safe to commit, no actual secrets)
+- `.gitignore` - Git ignore rules
 
 ## Installation
 
@@ -29,7 +31,7 @@ After changes, reload with:
 ## Key Configuration Patterns
 
 ### Zsh (.zshrc)
-- Oh My Zsh plugins: git, brew, gem, aws, docker, golang, tmux, kubectl, kubetail, terraform
+- Oh My Zsh plugins: git, brew, gem, aws, docker, golang, tmux, kubectl, kubetail, kube-ps1, terraform
 - Version managers: rbenv, pyenv, nodenv (via eval init commands)
 - Interactive tools: peco + ghq for project navigation
 - GOPATH set to `$HOME`, GOROOT at `/opt/homebrew/opt/go/libexec`
@@ -53,8 +55,7 @@ After changes, reload with:
 | `p` | cd to project via ghq + peco |
 | `v` | Open project in VS Code |
 | `c` | Open project in Cursor |
-| `Gl` | Open project in GoLand |
-| `i` | Open project in IntelliJ IDEA |
+| `ge` | Open Emacs in Ghostty |
 | `b` | Browse GitHub repo in browser |
 | `C` | Pipe output to clipboard (`\| C`) |
 
@@ -62,3 +63,33 @@ After changes, reload with:
 
 - `Ctrl-G Ctrl-P` - Interactive GitHub PR checkout (peco)
 - `Ctrl-R` - History search with pattern matching
+
+## Secret Management
+
+Secrets are managed via **1Password CLI** (`op`) using a template-based approach:
+
+- `.env.tpl` contains `op://` references (no actual secrets) — safe to commit
+- At shell startup, `op inject` resolves references and exports environment variables
+- Touch ID authenticates once per session
+
+### Adding a new secret
+
+1. Store the secret in 1Password (vault: `Private`, account: `my.1password.com`)
+2. Add a line to `.env.tpl`:
+   ```
+   export MY_SECRET={{ op://Private/item-name/password }}
+   ```
+3. Reload shell: `source ~/.zshrc`
+
+### Finding 1Password item paths
+
+```bash
+op item list --account=my.1password.com | grep -i <keyword>
+op item get "<item-name>" --account=my.1password.com
+```
+
+## Pre-commit Hooks
+
+- **gitleaks** scans staged changes for accidental secret commits
+- Installed as a local `.git/hooks/pre-commit` hook (not committed to repo)
+- Install: `brew install gitleaks`
