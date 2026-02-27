@@ -214,7 +214,7 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # activate zsh-completions
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH
 
   autoload -Uz compinit
   compinit
@@ -226,4 +226,32 @@ eval "$(pixi completion --shell zsh)"
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
-. "$HOME/.local/bin/env"
+[[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
+
+# 1Password CLI: inject secrets from template
+if command -v op &>/dev/null && [[ -f ~/src/github.com/nsega/dotfiles/.env.tpl ]]; then
+  eval "$(op inject -i ~/src/github.com/nsega/dotfiles/.env.tpl --account=my.1password.com)"
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/naokisega/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/naokisega/Downloads/goog
+le-cloud-sdk/completion.zsh.inc'; fi
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/naokisega/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+# Conda micromamba configuration
+export CONDACONFIGDIR=""
+   cd() { builtin cd "$@" &&
+   if [ -f $PWD/.conda_config ]; then
+       export CONDACONFIGDIR=$PWD
+       micromamba activate $(cat .conda_config)
+   elif [ "$CONDACONFIGDIR" ]; then
+       if [[ $PWD != *"$CONDACONFIGDIR"* ]]; then
+           export CONDACONFIGDIR=""
+           micromamba deactivate
+       fi
+   fi }
+
