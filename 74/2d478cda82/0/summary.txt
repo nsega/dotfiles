@@ -1,0 +1,1 @@
+Entire's tracking happens through `prepare-commit-msg`, `commit-msg`, `post-commit`, and `pre-push` hooks — there's no `pre-commit` hook for entire. The commit and push went through successfully, so entire should now be tracking sessions. Check if it's reflected on entire.io now.
