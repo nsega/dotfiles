@@ -3,6 +3,9 @@
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$HOME/.pyenv/shims/python:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$HOME/.pixi/bin:$PATH"
+# Claude Code Recommended: Create a new user-writable npm prefix
+export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -59,7 +62,7 @@ ZSH_DISABLE_COMPFIX="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew gem aws docker golang tmux kubectl kubetail terraform)
+plugins=(git brew gem aws docker golang tmux kubectl kubetail kube-ps1 terraform)
 
 # User configuration
 
@@ -74,6 +77,11 @@ export GPG_TTY=$(tty)
 
 export VOLTA_HOME=$HOME/.volta
 export PATH=$VOLTA_HOME/bin:$PATH
+
+export PATH=/opt/homebrew/opt/postgresql@17/bin:$PATH
+export PATH=/opt/homebrew/opt/mysql-client/bin:$PATH
+export PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH
+export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
 
 # Set the configuration for rbenv and pyenv
 eval "$(rbenv init -)"
@@ -109,7 +117,7 @@ export LANG=en_US.UTF-8
 # Example aliases
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls='ls -a'
+alias ls='ls -aG'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
@@ -120,8 +128,8 @@ alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code $(ghq root)/$(ghq list | peco)'
 alias c='cursor $(ghq root)/$(ghq list | peco)'
-alias Gl='goland $(ghq root)/$(ghq list | peco)'
-alias i='idea $(ghq root)/$(ghq list | peco)'
+alias ge='ghostty -e emacs &'
+
 alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
 
 source $ZSH/oh-my-zsh.sh
