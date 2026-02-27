@@ -1,2 +1,5 @@
 # Emacs undo-tree backup files
 *.~undo-tree~
+
+# Claude Code local settings
+.claude/settings.local.json
