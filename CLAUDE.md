@@ -91,5 +91,12 @@ op item get "<item-name>" --account=my.1password.com
 ## Pre-commit Hooks
 
 - **gitleaks** scans staged changes for accidental secret commits
-- Installed as a local `.git/hooks/pre-commit` hook (not committed to repo)
+- **entire** tracks development sessions and checkpoints
+- Both run as local `.git/hooks/pre-commit` (not committed to repo)
 - Install: `brew install gitleaks`
+
+## Session Tracking (Entire)
+
+- **Strategy**: `auto-commit` — automatically creates checkpoints
+- **Config**: `.entire/settings.json` (committed), `.entire/settings.local.json` (gitignored)
+- Re-enable: `entire enable --strategy auto-commit --force`
