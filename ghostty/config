@@ -59,7 +59,7 @@ window-theme = auto
 # Theme and Colors
 # 256 color support (equivalent to tmux's xterm-256color)
 theme = "Dark+"
-background-opacity = 1.0
+background-opacity = 0.95
 
 # Mouse Support
 # Enable mouse support (equivalent to tmux's mouse on)
@@ -72,8 +72,8 @@ clipboard-write = allow
 clipboard-trim-trailing-spaces = true
 
 # Scrollback Configuration
-# History limit (equivalent to tmux's history-limit 5000)
-scrollback-limit = 5000
+# History limit
+scrollback-limit = 100000
 
 # Keybindings
 # Using ctrl+t as the primary modifier (matching tmux prefix)
