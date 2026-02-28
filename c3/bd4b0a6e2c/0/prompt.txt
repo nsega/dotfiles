@@ -1,0 +1,77 @@
+<bash-input>which ll</bash-input>
+
+---
+
+<bash-stdout>ll: aliased to ls -lh</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+I defined alias ls='ls -aG' in .zshrc, but current zsh shows the different ailas ls. how can I fix this?
+
+---
+
+<bash-input>source ~/.zshrc && which ls</bash-input>
+
+---
+
+<bash-stdout>ls: aliased to ls -aG</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+it works. why the situation occurred?
+
+---
+
+<bash-input>pwd</bash-input>
+
+---
+
+<bash-stdout>/Users/naokisega/src/github.com/nsega/dotfiles</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+how can i show the boundary line of ghostty between multiple tabs in the window
+
+---
+
+can i use such green color for this sprit-divider-color?
+
+---
+
+[Image: source: /var/folders/3z/d5db7k0542q2h240nds6jjq80000gn/T/TemporaryItems/NSIRD_screencaptureui_SEpQR2/Screenshot 2026-02-27 at 3.24.54 PM.png]
+
+---
+
+<bash-input>alias ll</bash-input>
+
+---
+
+<bash-stdout>ll='ls -lh'</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+the alias ll defied at ~/.zshrc is different from the current terminal's alias. how can I address that?
+
+---
+
+[Request interrupted by user for tool use]
+
+---
+
+no, i want to show colornized list via ll alias.
+
+---
+
+colorized(-G) didn't work in ghossty. how can I fix that?
+
+---
+
+no, still didn't colorize the result of ls and ll both.
+
+---
+
+it works. Still, do we need to set  export CLICOLOR=1 ?
+
+---
+
+commit this
