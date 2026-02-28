@@ -158,5 +158,8 @@ auto-update = check
 # Confirm before closing windows with running processes
 confirm-close-surface = true
 
+# Split divider (boundary line between panes)
+split-divider-color = #2ea043
+
 # Working directory
 working-directory = inherit

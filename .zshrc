@@ -3,6 +3,7 @@
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
 export PATH="$HOME/.pyenv/shims/python:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"
 # Claude Code Recommended: Create a new user-writable npm prefix
 export PATH="$HOME/.npm-global/bin:$PATH"
@@ -111,13 +112,11 @@ export LANG=en_US.UTF-8
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-alias zshconfig="mate ~/.zshrc"
-alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls='ls -aG'
+source $ZSH/oh-my-zsh.sh
+
+# Custom aliases (after oh-my-zsh to override its defaults)
+alias ls='ls -a --color=auto'
+alias ll='ls -alh --color=auto'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
@@ -131,8 +130,6 @@ alias c='cursor $(ghq root)/$(ghq list | peco)'
 alias ge='ghostty -e emacs &'
 
 alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'
-
-source $ZSH/oh-my-zsh.sh
 
 PROMPT=$PROMPT'$(kube_ps1) '
 
