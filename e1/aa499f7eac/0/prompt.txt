@@ -1,0 +1,305 @@
+please add gemini-api-key into .env.tpl
+
+---
+
+[ERROR] 2026/02/28 16:11:04 item 'Private/gemini-api-key' does not have a field 'password'
+
+---
+
+<bash-input>op item get "gemini-api-key" --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID:          cy6gxkysnwsii5wn7n5jvohmbi
+Title:       gemini-api-key
+Vault:       Personal (twpi32edvw57yxnbbh536li4wy)
+Created:     1 year ago
+Updated:     3 minutes ago by Naoki Sega
+Favorite:    false
+Version:     6
+Category:    API_CREDENTIAL
+Fields:
+  username:          Gemini API project(nsega-personal)
+  credential:        [use 'op item get cy6gxkysnwsii5wn7n5jvohmbi --reveal' to reveal]
+  filename:          key-for-llm
+  Project name:      projects/867129294909
+  Project number:    867129294909
+  url:               https://aistudio.google.com/app/projects?projectFilter=gen-lang-client-0612870942</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+ran this command.
+
+---
+
+I updated openai-api-key from password to credential.
+
+---
+
+I updated aws-bedrock-api-key from password to credential.
+
+---
+
+[ERROR] 2026/02/28 16:22:07 could not find item aws-bedrock-api-key in vault Private, because it has been deleted or archived. Please restore the item if you want to use it with secret provisioning
+
+---
+
+i created the api credential  item aws-bedrock-api-key in the 1Password.
+
+---
+
+Private
+
+---
+
+i created the api credential  item aws-bedrock-api-key and openai-api-key in the 1Password.
+
+---
+
+<bash-input>source ~/.zshrc</bash-input>
+
+---
+
+<bash-stdout>[ERROR] 2026/02/28 16:25:17 could not find item aws-bedrock-api-key in vault Private, because it has been deleted or archived. Please restore the item if you want to use it with secret provisioning</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+Ran into this error messages even though I created the item as API Credential.
+
+---
+
+<bash-input>op item get "aws-bedrock-api-key" --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID:          lf4ktkrckqnq5dinm4wjeo6mku
+Title:       aws-bedrock-api-key
+Vault:       Personal (twpi32edvw57yxnbbh536li4wy)
+Created:     12 minutes ago
+Updated:     5 minutes ago by Naoki Sega
+Favorite:    false
+Version:     5
+Category:    API_CREDENTIAL
+Fields:
+  notesPlain:    AWS BEARER TOKEN BEDROCK for FoundationEGI
+  username:      BedrockAPIKey-p77h-at-5908070979000
+  credential:    [use 'op item get lf4ktkrckqnq5dinm4wjeo6mku --reveal' to reveal]
+  type:          bearer
+  url:           https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/api-keys/long-term/create</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+I got it
+
+---
+
+<bash-input>op item get "openai-api-key" --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID:          vjec7wstjflueiuq2hkhu3rfpe
+Title:       openai-api-key
+Vault:       Personal (twpi32edvw57yxnbbh536li4wy)
+Created:     9 minutes ago
+Updated:     8 minutes ago by Naoki Sega
+Favorite:    false
+Version:     2
+Category:    API_CREDENTIAL
+Fields:
+  notesPlain:    The api key is for my personal use.
+  username:      nsegaster@gmail.com
+  credential:    [use 'op item get vjec7wstjflueiuq2hkhu3rfpe --reveal' to reveal]
+  type:          bearer</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+I did
+
+---
+
+<bash-input> source ~/.zshrc</bash-input>
+
+---
+
+<bash-stdout></bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+git commit and push this change.
+
+---
+
+source ~/.zshrc
+[ERROR] 2026/02/28 16:35:07 could not find item openai-api-key in vault Personal, because it has been deleted or archived. Please restore the item if you want to use it with secret provisioning
+
+---
+
+op item list --account=my.1password.com | grep -i openai
+
+---
+
+<bash-input>op item list --account=my.1password.com | grep -i openai</bash-input>
+
+---
+
+<bash-stdout>vjec7wstjflueiuq2hkhu3rfpe    openai-api-key                                                                        Private            3 minutes ago
+qkyzn5tpzcwphbu4zlvq5vxecq    OpenAI(ChatGPT,etc)                                                                   Private            1 month ago</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+vjec7wstjflueiuq2hkhu3rfpe    openai-api-key                                                                        Private
+
+---
+
+<bash-input>op item list --account=my.1password.com | grep -i aws-bedrock-api-key</bash-input>
+
+---
+
+<bash-stdout>lf4ktkrckqnq5dinm4wjeo6mku    aws-bedrock-api-key                                                                   Private            4 minutes ago</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+⎿  lf4ktkrckqnq5dinm4wjeo6mku    aws-bedrock-api-key                                                                   Private
+           4 minutes ago
+
+---
+
+<bash-input>op item list --account=my.1password.com | grep -i gemini-api-key</bash-input>
+
+---
+
+<bash-stdout>cy6gxkysnwsii5wn7n5jvohmbi    gemini-api-key                                                                        Private            5 minutes ago</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+⎿  cy6gxkysnwsii5wn7n5jvohmbi    gemini-api-key                                                                        Private
+           5 minutes ago
+
+---
+
+[ERROR] 2026/02/28 16:39:06 could not find item aws-bedrock-api-key in vault Private, because it has been deleted or archived. Please restore the item if you want to use it with secret provisioning
+
+---
+
+op item get "aws-bedrock-api-key" --account=my.1password.com
+
+---
+
+[Request interrupted by user]
+
+---
+
+<bash-input>op item get "aws-bedrock-api-key" --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID:          lf4ktkrckqnq5dinm4wjeo6mku
+Title:       aws-bedrock-api-key
+Vault:       Personal (twpi32edvw57yxnbbh536li4wy)
+Created:     25 minutes ago
+Updated:     6 minutes ago by Naoki Sega
+Favorite:    false
+Tags:        .env.tpl
+Version:     6
+Category:    API_CREDENTIAL
+Fields:
+  notesPlain:    AWS BEARER TOKEN BEDROCK for FoundationEGI
+  username:      BedrockAPIKey-p77h-at-5908070979000
+  credential:    [use 'op item get lf4ktkrckqnq5dinm4wjeo6mku --reveal' to reveal]
+  type:          bearer
+  url:           https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/api-keys/long-term/create</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+I did
+
+---
+
+<bash-input>  op item get "openai-api-key" --account=my.1password.com
+  op item get "gemini-api-key" --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID:          vjec7wstjflueiuq2hkhu3rfpe
+Title:       openai-api-key
+Vault:       Personal (twpi32edvw57yxnbbh536li4wy)
+Created:     23 minutes ago
+Updated:     6 minutes ago by Naoki Sega
+Favorite:    false
+Tags:        .env.tpl
+Version:     3
+Category:    API_CREDENTIAL
+Fields:
+  notesPlain:    The api key is for my personal use.
+  username:      nsegaster@gmail.com
+  credential:    [use 'op item get vjec7wstjflueiuq2hkhu3rfpe --reveal' to reveal]
+  type:          bearer
+ID:          cy6gxkysnwsii5wn7n5jvohmbi
+Title:       gemini-api-key
+Vault:       Personal (twpi32edvw57yxnbbh536li4wy)
+Created:     1 year ago
+Updated:     6 minutes ago by Naoki Sega
+Favorite:    false
+Tags:        .env.tpl
+Version:     7
+Category:    API_CREDENTIAL
+Fields:
+  username:          Gemini API project(nsega-personal)
+  credential:        [use 'op item get cy6gxkysnwsii5wn7n5jvohmbi --reveal' to reveal]
+  filename:          key-for-llm
+  Project name:      projects/867129294909
+  Project number:    867129294909
+  url:               https://aistudio.google.com/app/projects?projectFilter=gen-lang-client-0612870942</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+I did
+
+---
+
+source ~/.zshrc
+[ERROR] 2026/02/28 16:40:39 could not find item openai-api-key in vault Personal, because it has been deleted or archived. Please restore the item if you want to use it with secret provisioning
+
+---
+
+<bash-input>op vault list --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID                            NAME
+twpi32edvw57yxnbbh536li4wy    Private
+d3xutozzovvxz7xcxo3qpo5qui    Shared</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+<bash-input>op vault list --account=my.1password.com</bash-input>
+
+---
+
+<bash-stdout>ID                            NAME
+twpi32edvw57yxnbbh536li4wy    Private
+d3xutozzovvxz7xcxo3qpo5qui    Shared</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+i did
+
+---
+
+<bash-input>git status</bash-input>
+
+---
+
+<bash-stdout>On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .env.tpl
+
+no changes added to commit (use "git add" and/or "git commit -a")</bash-stdout><bash-stderr></bash-stderr>
+
+---
+
+git commit and push
