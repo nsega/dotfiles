@@ -1,0 +1,46 @@
+as for.zshrc, # 1Password CLI: inject secrets from template
+if command -v op &>/dev/null && [[ -f ~/src/github.com/nsega/dotfiles/.env.tpl ]]; then
+  eval "$(op inject -i ~/src/github.com/nsega/dotfiles/.env.tpl --account=my.1password.com)"
+fi
+
+
+I have to authorize 1password access required every time when the terminal launch. Is there a mitigation of this?
+
+---
+
+is ths approach acceptable?
+
+---
+
+yes, please
+
+---
+
+2. every 24 hours
+
+---
+
+Added .cache/op_env_cache into ~/.gitignore. How about it?
+
+---
+
+Last login: Sun Mar  8 08:46:09 on ttys039
+stat: invalid option -- '%'
+Try 'stat --help' for more information.
+/Users/naokisega/.zshrc:235: bad math expression: operand expected at `< _OP_CACH...'
+
+---
+
+it works
+
+---
+
+as a senior security engineer, review this change.
+
+---
+
+Choose option A
+
+---
+
+how can i verify it?
