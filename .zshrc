@@ -225,10 +225,37 @@ export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
 [[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
 
-# 1Password CLI: inject secrets from template
-if command -v op &>/dev/null && [[ -f ~/src/github.com/nsega/dotfiles/.env.tpl ]]; then
-  eval "$(op inject -i ~/src/github.com/nsega/dotfiles/.env.tpl --account=my.1password.com)"
+# 1Password CLI: inject secrets from template (cached, auto-refresh every 24h)
+# Run `op-reload` to re-authenticate and refresh immediately
+_OP_ENV_CACHE="$HOME/.cache/op_env_cache"
+_OP_ENV_TPL="$HOME/src/github.com/nsega/dotfiles/.env.tpl"
+_OP_CACHE_TTL=86400  # 24 hours in seconds
+
+if command -v op &>/dev/null && [[ -f "$_OP_ENV_TPL" ]]; then
+  if [[ -f "$_OP_ENV_CACHE" ]] && (( $(date +%s) - $(stat -c %Y "$_OP_ENV_CACHE") < _OP_CACHE_TTL )); then
+    source "$_OP_ENV_CACHE"
+  else
+    mkdir -p "$(dirname "$_OP_ENV_CACHE")"
+    if (umask 077 && op inject -i "$_OP_ENV_TPL" --account=my.1password.com > "$_OP_ENV_CACHE") 2>/dev/null; then
+      source "$_OP_ENV_CACHE"
+    else
+      rm -f "$_OP_ENV_CACHE"
+    fi
+  fi
+  trap 'rm -f "$_OP_ENV_CACHE"' EXIT
 fi
+
+op-reload() {
+  rm -f "$_OP_ENV_CACHE"
+  mkdir -p "$(dirname "$_OP_ENV_CACHE")"
+  if (umask 077 && op inject -i "$_OP_ENV_TPL" --account=my.1password.com > "$_OP_ENV_CACHE"); then
+    source "$_OP_ENV_CACHE"
+    echo "1Password secrets reloaded."
+  else
+    rm -f "$_OP_ENV_CACHE"
+    echo "Failed to reload 1Password secrets." >&2
+  fi
+}
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/naokisega/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/naokisega/Downloads/goog
