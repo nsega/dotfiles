@@ -66,11 +66,13 @@ After changes, reload with:
 
 ## Secret Management
 
-Secrets are managed via **1Password CLI** (`op`) using a template-based approach:
+Secrets are managed via **1Password CLI** (`op`) using a template-based approach with caching:
 
 - `.env.tpl` contains `op://` references (no actual secrets) — safe to commit
-- At shell startup, `op inject` resolves references and exports environment variables
-- Touch ID authenticates once per session
+- At shell startup, `op inject` resolves references and caches to `~/.cache/op_env_cache`
+- Cache auto-refreshes every 24 hours — Touch ID prompted once per day
+- Cache created with `umask 077` and cleaned up on shell exit via `EXIT` trap
+- Run `op-reload` to manually refresh secrets
 
 ### Adding a new secret
 
@@ -79,7 +81,7 @@ Secrets are managed via **1Password CLI** (`op`) using a template-based approach
    ```
    export MY_SECRET={{ op://Private/item-name/password }}
    ```
-3. Reload shell: `source ~/.zshrc`
+3. Refresh secrets: `op-reload`
 
 ### Finding 1Password item paths
 
