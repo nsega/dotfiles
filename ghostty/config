@@ -155,6 +155,10 @@ gtk-titlebar = false
 # Auto-update check
 auto-update = check
 
+# Session Restoration
+# Save and restore windows, tabs, and splits on restart
+window-save-state = always
+
 # Confirm before closing windows with running processes
 confirm-close-surface = true
 
