@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.0",
+  "checkpoint_id": "eb7bfeaecc6f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ghostty/config"
+  ],
+  "sessions": [
+    {
+      "metadata": "/eb/7bfeaecc6f/0/metadata.json",
+      "transcript": "/eb/7bfeaecc6f/0/full.jsonl",
+      "content_hash": "/eb/7bfeaecc6f/0/content_hash.txt",
+      "prompt": "/eb/7bfeaecc6f/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 12,
+    "cache_creation_tokens": 15795,
+    "cache_read_tokens": 124711,
+    "output_tokens": 849,
+    "api_call_count": 6
+  }
+}

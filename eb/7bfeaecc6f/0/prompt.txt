@@ -1,0 +1,1 @@
+is this setting for ghostty working or not? Make sure this configuration via context7.
