@@ -8,6 +8,9 @@ export PATH="$HOME/.pixi/bin:$PATH"
 # Claude Code Recommended: Create a new user-writable npm prefix
 export PATH="$HOME/.npm-global/bin:$PATH"
 
+# Increase file descriptor limit (macOS default is 256)
+ulimit -n 65536
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
