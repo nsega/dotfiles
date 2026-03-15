@@ -1,0 +1,19 @@
+I want to add  ulimit -n 65536 to .zshrc becuse the default file descpritor is only 256
+
+---
+
+is this number resonable or not?
+
+---
+
+sysctl kern.maxfiles kern.maxfilesperproc
+kern.maxfiles: 368640
+kern.maxfilesperproc: 184320
+
+---
+
+git commit this change and push it
+
+---
+
+1
