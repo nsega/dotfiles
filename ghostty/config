@@ -73,7 +73,7 @@ clipboard-trim-trailing-spaces = true
 
 # Scrollback Configuration
 # History limit
-scrollback-limit = 200000
+scrollback-limit = 1000000
 
 # Keybindings
 # Using ctrl+t as the primary modifier (matching tmux prefix)
