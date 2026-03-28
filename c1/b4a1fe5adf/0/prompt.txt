@@ -13,3 +13,7 @@ here is the error
 source ~/.zshrc
 stat: cannot read file system information for '%m': No such file or directory
 /Users/naokisega/.zshrc:238: bad math expression: operand expected at `"/Users/na...'
+
+---
+
+the error is gone
