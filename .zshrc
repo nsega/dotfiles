@@ -245,7 +245,7 @@ if command -v op &>/dev/null && [[ -f "$_OP_ENV_TPL" ]]; then
       rm -f "$_OP_ENV_CACHE"
     fi
   fi
-  trap 'rm -f "$_OP_ENV_CACHE"' EXIT
+  # Cache persists across shell sessions; run `op-reload` to refresh manually
 fi
 
 op-reload() {
