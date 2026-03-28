@@ -47,69 +47,50 @@ Personal configuration files for macOS (Apple Silicon), optimized for DevOps and
 
 - **Prefix**: `Ctrl-T` (instead of default Ctrl-B)
 - **Default Shell**: Zsh
+- **Terminal**: tmux-256color with true color and italic support
 - **Mouse Support**: Enabled with scroll wheel
-- **Clipboard**: macOS integration via `reattach-to-user-namespace`
+- **Clipboard**: Native macOS integration via `pbcopy` (no `reattach-to-user-namespace` needed)
 - **Key Bindings**:
   - `Ctrl-T`: Next window
-  - `v`: Vertical split
-  - `h`: Horizontal split
-  - `Shift+Arrow`: Navigate panes
-  - `Prefix + r`: Reload config
-- **History**: 5000 lines
-- **Copy/Paste**: Ctrl-C/Ctrl-V for clipboard operations
+  - `Ctrl-T v`: Vertical split (preserves current path)
+  - `Ctrl-T h`: Horizontal split (preserves current path)
+  - `Shift+Arrow`: Navigate between panes
+  - `Ctrl-T r`: Reload config
+  - `Ctrl-T Ctrl-C`: Copy buffer to clipboard
+  - `Ctrl-T Ctrl-V`: Paste from clipboard
+- **History**: 1,000,000 lines
+- **Performance**: Zero escape delay (`escape-time 0`), focus events enabled
+- **Status Bar**: Green background, session/window/host info in title
 - **Plugins** (via TPM):
   - tmux-resurrect (session save/restore)
-  - tmux-continuum (auto-save every 15 min)
+  - tmux-continuum (auto-save every 15 min, auto-restore on start)
 
 ### Ghostty Configuration
 
 Modern GPU-accelerated terminal emulator with native multiplexing (alternative to tmux):
 
 - **Default Shell**: Zsh with native shell integration
-- **Mouse Support**: Enabled with native clipboard integration
-- **Prefix Key**: `Ctrl+T` (matching tmux configuration)
-- **Key Bindings** (chord-based like tmux):
-  - **Split Management**:
-    - `Ctrl+T > H`: Split left
-    - `Ctrl+T > J`: Split down
-    - `Ctrl+T > K`: Split up
-    - `Ctrl+T > L`: Split right
-    - `Ctrl+T > F`: Toggle split zoom (maximize/restore)
-    - `Ctrl+T > O`: Cycle through splits
-    - `Ctrl+T > Space`: Equalize split sizes
-  - **Navigation**:
-    - `Shift+Arrow Keys`: Quick navigation between splits
-    - `Ctrl+T > Arrow Keys`: Navigate between splits (prefix style)
-  - **Tab Management**:
-    - `Ctrl+T > N`: Next tab
-    - `Ctrl+T > P`: Previous tab
-    - `Ctrl+T > C`: Create new tab
-  - **Clipboard**:
-    - `Ctrl+T > Shift+C`: Copy to clipboard
-    - `Ctrl+T > V`: Paste from clipboard
-  - **Scrollback Navigation** (emacs-style, prefix-based):
-    - `Ctrl+T > Ctrl+N`: Scroll down one line
-    - `Ctrl+T > Ctrl+P`: Scroll up one line
-    - `Ctrl+T > Ctrl+V`: Page down
-    - `Ctrl+T > Alt+V`: Page up
-    - `Ctrl+T > Alt+<`: Scroll to top
-    - `Ctrl+T > Alt+>`: Scroll to bottom
-  - **Other**:
-    - `Ctrl+T > Alt+X`: Command palette
-    - `Ctrl+T > R`: Reload configuration
-- **Scrollback**: 100,000 lines
+- **Clipboard**: Native integration (read/write allowed, trailing spaces trimmed)
+- **Key Bindings**:
+  - **Split Navigation**: `Shift+Arrow Keys` to move between splits
+  - All `Ctrl+T` chord keybindings are commented out (available to re-enable if needed)
+- **Scrollback**: 1,000,000 lines
 - **Terminal**: 256 color support (xterm-256color)
 - **Font**: Monaco, 12pt (ligatures disabled)
+- **Theme**: Dark+ with 95% background opacity
+- **Session**: Window state saved/restored on restart (`window-save-state = always`)
+- **Safety**: Confirm before closing surfaces with running processes
+- **Layout**: 4px window padding, white split divider, inherits working directory
 - **Features**: GPU-accelerated rendering, native split panes, auto-update checks
 
 ## Secret Management
 
 Secrets are managed via **1Password CLI** (`op`) using a template-based approach with caching:
 
-- `.env.tpl` contains `op://` references (no actual secrets) — safe to commit
+- `.env.tpl` contains `op://` references (no actual secrets) -- safe to commit
 - At shell startup, `op inject` resolves references and caches the result to `~/.cache/op_env_cache`
-- Cache auto-refreshes every 24 hours — Touch ID is only prompted once per day
-- Cache is created with `umask 077` (owner-only permissions) and cleaned up on shell exit via `EXIT` trap
+- Cache auto-refreshes every 24 hours -- Touch ID is only prompted once per day
+- Cache is created with `umask 077` (owner-only permissions) and persists across shell sessions
 - Run `op-reload` to manually refresh secrets at any time
 
 ### Adding a new secret
@@ -136,18 +117,19 @@ op item get "<item-name>" --account=my.1password.com
 ## Requirements
 
 ### Core Dependencies
+
 - macOS (optimized for Apple Silicon)
 - [Homebrew](https://brew.sh/)
 - [Oh My Zsh](https://ohmyz.sh/)
 - Zsh (default shell on macOS)
 
 ### Recommended Packages
+
 ```bash
 # Terminal emulator and multiplexer
 brew install ghostty              # Modern GPU-accelerated terminal (tmux alternative)
 brew install tmux                 # Traditional terminal multiplexer
 brew install peco
-brew install reattach-to-user-namespace
 
 # Version managers
 brew install rbenv
@@ -187,6 +169,7 @@ brew install --cask google-cloud-sdk
 ```
 
 ### Zsh Plugins
+
 ```bash
 # Zsh syntax highlighting
 brew install zsh-syntax-highlighting
@@ -267,9 +250,16 @@ source ~/.zshrc
 - `Ctrl-T p`: Previous window
 
 **Pane Management:**
-- `Ctrl-T v`: Vertical split
-- `Ctrl-T h`: Horizontal split
+- `Ctrl-T v`: Vertical split (opens in current directory)
+- `Ctrl-T h`: Horizontal split (opens in current directory)
 - `Shift+Arrow`: Navigate between panes
+
+**Clipboard:**
+- `Ctrl-T Ctrl-C`: Copy tmux buffer to system clipboard
+- `Ctrl-T Ctrl-V`: Paste from system clipboard
+
+**Configuration:**
+- `Ctrl-T r`: Reload tmux config
 
 ### Ghostty Usage
 
@@ -277,45 +267,19 @@ source ~/.zshrc
 - Launch Ghostty from Applications or via `ghostty` command
 - Configuration loads automatically from `~/.config/ghostty/config`
 
-**Split Management:**
-- `Ctrl+T > H/J/K/L`: Create splits left/down/up/right (vim-style)
-- `Shift+Arrow Keys`: Quick navigation between splits
-- `Ctrl+T > Arrow Keys`: Navigate between splits (prefix style)
-- `Ctrl+T > F`: Toggle split zoom (maximize/restore current split)
-- `Ctrl+T > O`: Cycle through splits
-- `Ctrl+T > Space`: Equalize split sizes
+**Split Navigation:**
+- `Shift+Arrow Keys`: Navigate between splits
 - Mouse click to focus a split
 
-**Tab Management:**
-- `Ctrl+T > N`: Switch to next tab
-- `Ctrl+T > P`: Switch to previous tab
-- `Ctrl+T > C`: Create new tab
-- Mouse click on tab bar to switch tabs
-
-**Clipboard Operations:**
-- `Ctrl+T > Shift+C`: Copy selected text to clipboard
-- `Ctrl+T > V`: Paste from clipboard
-- Native macOS clipboard integration (no reattach-to-user-namespace needed)
-
-**Scrollback Navigation (emacs-style):**
-- `Ctrl+T > Ctrl+N/P`: Scroll down/up one line
-- `Ctrl+T > Ctrl+V`: Page down
-- `Ctrl+T > Alt+V`: Page up
-- `Ctrl+T > Alt+<` / `Alt+>`: Jump to top/bottom
-
 **Configuration:**
-- `Ctrl+T > R`: Reload configuration without restarting
-- `Ctrl+T > Alt+X`: Open command palette
 - Edit `~/dotfiles/ghostty/config` to customize settings
-- Changes take effect immediately after reload
-
-**Note:** The `>` symbol indicates a chord sequence - press `Ctrl+T`, release, then press the next key (similar to tmux prefix behavior)
+- Ctrl+T chord keybindings are commented out but can be re-enabled as needed
 
 **Benefits over tmux:**
 - GPU-accelerated rendering for better performance
 - Native split panes without separate multiplexer process
 - Direct clipboard integration without additional tools
-- Modern UI with mouse support out of the box
+- Session restoration on restart
 
 ## Configuration Details
 
