@@ -1,0 +1,47 @@
+git push
+
+---
+
+update README.md
+
+---
+
+is there any improvement for .tmux.conf?
+
+---
+
+yes
+
+---
+
+how can I confirm this?
+
+---
+
+➜  ~ (⎈|fllm-sysadmin-main:N/A)   tmux source-file ~/.tmux.conf
+
+➜  ~ (⎈|fllm-sysadmin-main:N/A)   tmux show -g default-command
+
+default-command "reattach-to-user-namespace -l zsh"
+➜  ~ (⎈|fllm-sysadmin-main:N/A)  tmux show -g history-limit
+
+history-limit 1000000
+➜  ~ (⎈|fllm-sysadmin-main:N/A)   tmux show -sg escape-time
+escape-time 0
+➜  ~ (⎈|fllm-sysadmin-main:N/A) tmux show -g focus-events
+
+focus-events on
+➜  ~ (⎈|fllm-sysadmin-main:N/A)  tmux show -g default-terminal
+default-terminal tmux-256color
+➜  ~ (⎈|fllm-sysadmin-main:N/A)  cd /tmp && tmux split-window -v -c "#{pane_current_path}"
+
+➜  /tmp (⎈|fllm-sysadmin-main:N/A)   echo "test" | pbcopy && pbpaste
+
+test
+
+---
+
+In tmux, ➜  dotfiles git:(main) ✗ (⎈|fllm-sysadmin-main:N/A)  tmux set -g default-command ""
+
+➜  dotfiles git:(main) ✗ (⎈|fllm-sysadmin-main:N/A) tmux show -g default-command
+default-command ''
