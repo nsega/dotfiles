@@ -49,3 +49,7 @@ default-command ''
 ---
 
 git commit this change
+
+---
+
+git commit .zshrc
