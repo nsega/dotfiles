@@ -1,0 +1,1 @@
+1password secrets references often pops out when opening the terminals. It often makes me hassale. how can I address that?
