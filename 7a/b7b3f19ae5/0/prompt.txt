@@ -53,3 +53,7 @@ git commit this change
 ---
 
 git commit .zshrc
+
+---
+
+git commit ghostty/config
