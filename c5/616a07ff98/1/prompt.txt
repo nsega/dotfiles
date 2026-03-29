@@ -1,0 +1,5 @@
+git push
+
+---
+
+how can I reload the new config of .tmux.conf?
