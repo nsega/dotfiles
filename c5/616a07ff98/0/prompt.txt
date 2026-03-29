@@ -1,0 +1,148 @@
+how can I get the notification evnet of Claude Code in tmux in Ghostty?
+
+---
+
+ensure this setting for both.
+
+---
+
+how can i verify?
+
+---
+
+how can I confirm it?
+
+---
+
+how can i test?
+
+---
+
+how caout claude code event to send notification?
+
+---
+
+yes
+
+---
+
+how can I test it?
+
+---
+
+No
+
+---
+
+resume it
+
+---
+
+how can i execute this command?
+
+---
+
+Yes, but, this change is not the one I expected. revert it
+
+---
+
+when claude code asks the permission in Ghosty, Ghosty send the notification to the macos notification. however, claude code in tmux running in Ghostty, Ghosty doesn't send the same notification.
+
+---
+
+when claude code asks the permission in Ghosty, Ghosty send the notification to the macos notification. however, claude code in tmux running in Ghostty, Ghosty doesn't send the same notification. 
+My expectation is that  claude code in tmux running in Ghostty, tmux in Ghosty sends the same notification.
+
+---
+
+No
+
+---
+
+[Image #2] [Image #4]
+
+---
+
+That attacged files are testing with Claude Code in Ghostty instead of tmux.
+
+---
+
+how can I set up this notification via Claude Code of tmux in Ghostty?
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+I didn't recieve the notification message in Notification Center in my macos
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+it didn't work. how can i confirm if tmux configuration is reloaded.
+
+---
+
+[Image #5]  No notification
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+I didn't recieve the notification from this
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+[Image #6]
+
+---
+
+revert attention to permission
+
+---
+
+make sure this tmux conf is valid
+
+---
+
+I cannot go back to the target pane from the notification in notification center of macos
+
+---
+
+brew install terminal-notifier
+
+==> Auto-updating Homebrew...
+Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
+`$HOMEBREW_NO_AUTO_UPDATE=1`. Hide these hints with `$HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+==> Auto-updated Homebrew!
+Updated 3 taps (k1low/tap, homebrew/core and homebrew/cask).
+==> New Formulae
+nextpnr-ice40: Portable FPGA place and route tool for Lattice iCE40
+pay: HTTP client that automatically handles 402 Payment Required
+==> New Casks
+font-bj-cree
+font-saira-stencil
+incident-io: Incident management platform
+nimbalyst: Visual workspace for building with Codex and Claude Code
+scribus@devel: Free and open-source page layout program
+
+You have 9 outdated formulae and 1 outdated cask installed.
+
+==> Fetching downloads for: terminal-notifier
+✔︎ Bottle Manifest terminal-notifier (2.0.0)                                                                           Downloaded   14.1KB/ 14.1KB
+✔︎ Bottle terminal-notifier (2.0.0)                                                                                    Downloaded  353.3KB/353.3KB
+==> Pouring terminal-notifier--2.0.0.arm64_tahoe.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/terminal-notifier/2.0.0: 13 files, 488.6KB
+==> Running `brew cleanup terminal-notifier`...
+Disable this behaviour by setting `HOMEBREW_NO_INSTALL_CLEANUP=1`.
+Hide these hints with `HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).

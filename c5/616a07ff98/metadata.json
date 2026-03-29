@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "c5616a07ff98",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 23,
+  "files_touched": [
+    ".tmux.conf"
+  ],
+  "sessions": [
+    {
+      "metadata": "/c5/616a07ff98/0/metadata.json",
+      "transcript": "/c5/616a07ff98/0/full.jsonl",
+      "content_hash": "/c5/616a07ff98/0/content_hash.txt",
+      "prompt": "/c5/616a07ff98/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 154,
+    "cache_creation_tokens": 109378,
+    "cache_read_tokens": 3121676,
+    "output_tokens": 13566,
+    "api_call_count": 89
+  }
+}
