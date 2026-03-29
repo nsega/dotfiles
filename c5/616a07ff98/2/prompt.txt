@@ -1,0 +1,5 @@
+how can i test ask action from Claude Code?
+
+---
+
+save this explanation
