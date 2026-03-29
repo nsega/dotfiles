@@ -146,3 +146,19 @@ You have 9 outdated formulae and 1 outdated cask installed.
 ==> Running `brew cleanup terminal-notifier`...
 Disable this behaviour by setting `HOMEBREW_NO_INSTALL_CLEANUP=1`.
 Hide these hints with `HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+write a test file to  /tmp/test.txt"
+
+---
+
+git commit this change
