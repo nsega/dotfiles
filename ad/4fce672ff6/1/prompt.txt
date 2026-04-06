@@ -1,0 +1,7 @@
+xport AWS_BEARER_TOKEN_BEDROCK={{ op://Private/aws-bedrock-api-key/credential }}
+zsh: parse error near `}'
+
+---
+
+export AWS_BEARER_TOKEN_BEDROCK={{ op://Private/aws-bedrock-api-key/credential }}
+zsh: parse error near `}'
