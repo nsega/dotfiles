@@ -79,6 +79,9 @@ export GPG_TTY=$(tty)
 export VOLTA_HOME=$HOME/.volta
 export PATH=$VOLTA_HOME/bin:$PATH
 
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 export PATH=/opt/homebrew/opt/postgresql@17/bin:$PATH
 export PATH=/opt/homebrew/opt/mysql-client/bin:$PATH
 export PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH
@@ -278,4 +281,8 @@ export CONDACONFIGDIR=""
            micromamba deactivate
        fi
    fi }
+
+
+# bun completions
+[ -s "/Users/naokisega/.bun/_bun" ] && source "/Users/naokisega/.bun/_bun"
 
