@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.5.3",
+  "checkpoint_id": "2dcf4d9f909a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".tmux.conf",
+    "ghostty/config"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2d/cf4d9f909a/0/metadata.json",
+      "transcript": "/2d/cf4d9f909a/0/full.jsonl",
+      "content_hash": "/2d/cf4d9f909a/0/content_hash.txt",
+      "prompt": "/2d/cf4d9f909a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 35948,
+    "cache_read_tokens": 179443,
+    "output_tokens": 2070,
+    "api_call_count": 8
+  }
+}

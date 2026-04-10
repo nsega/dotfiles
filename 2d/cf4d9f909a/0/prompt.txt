@@ -1,0 +1,19 @@
+tmux running on ghostty are not able to expand the window to maximum size. how can i address that?
+
+---
+
+[Image #1]  
+
+Ghostty is not able to expand the size to the maximum window size.
+
+---
+
+how can i run tmux reload instead of short-cut
+
+---
+
+how can i run tmux reload instead of short-cut kye
+
+---
+
+how can i run tmux reload instead of short-cut key?
