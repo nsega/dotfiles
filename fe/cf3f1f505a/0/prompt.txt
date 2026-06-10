@@ -1,0 +1,9 @@
+source ~/.zshrc
+
+---
+
+confirmed
+
+---
+
+commit and push
