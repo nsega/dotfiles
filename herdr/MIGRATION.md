@@ -12,9 +12,10 @@ tmux の永続化（detach/attach）に加えて、Claude Code などのエー�
 # 1. インストール（Homebrew）
 brew install herdr
 
-# 2. 設定ファイルをシンボリックリンク
-mkdir -p ~/.config/herdr
-ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+# 2. 設定ファイルをシンボリックリンク（既存の実ファイルは .backup に退避される）
+make -C ~/dotfiles herdr
+#    手動でやる場合:
+#    mkdir -p ~/.config/herdr && ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 
 # 3. Claude Code 連携をインストール
 #    ~/.claude/hooks/herdr-agent-state.sh を作成し settings.json にフックを追加。

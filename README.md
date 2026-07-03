@@ -9,6 +9,7 @@ Personal configuration files for macOS (Apple Silicon), optimized for DevOps and
 - **`ghostty/config`** - Ghostty terminal emulator configuration (tmux alternative)
 - **`herdr/config.toml`** - Herdr agent multiplexer configuration (tmux replacement for Claude Code workflows)
 - **`herdr/MIGRATION.md`** - tmux → herdr migration plan and learning guide
+- **`Makefile`** - Symlink installer (`make` for everything, `make <name>` for individual configs)
 - **`.env.tpl`** - 1Password secret references (safe to commit, no actual secrets)
 - **`.gitignore`** - Git ignore rules
 
@@ -213,18 +214,26 @@ mv ~/.zshrc ~/.zshrc.backup
 mv ~/.tmux.conf ~/.tmux.conf.backup
 ```
 
-3. Create symlinks:
+3. Create symlinks via the Makefile (existing regular files are backed up to `<name>.backup` first):
+```bash
+make            # link everything (default)
+
+# Or link configs individually:
+make zsh        # .zshrc
+make tmux       # .tmux.conf
+make ghostty    # ghostty/config
+make herdr      # herdr/config.toml
+
+make unlink     # remove all symlinks created by the Makefile
+make help       # show available targets
+```
+
+Equivalent manual commands, if you prefer:
 ```bash
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-
-# For Ghostty configuration
-mkdir -p ~/.config/ghostty
-ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
-
-# For Herdr configuration
-mkdir -p ~/.config/herdr
-ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+mkdir -p ~/.config/ghostty && ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
+mkdir -p ~/.config/herdr && ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 ```
 
 4. Install Oh My Zsh (if not already installed):

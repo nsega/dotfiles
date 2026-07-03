@@ -13,18 +13,19 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 - `ghostty/config` - Ghostty terminal emulator (tmux alternative with native splits)
 - `herdr/config.toml` - Herdr agent multiplexer (tmux replacement, prefix: `Ctrl+T`)
 - `herdr/MIGRATION.md` - tmux → herdr migration plan and learning guide (Japanese)
+- `Makefile` - Symlink installer (`make` = all, `make zsh|tmux|ghostty|herdr` = individual, `make unlink`)
 - `.env.tpl` - 1Password secret references (safe to commit, no actual secrets)
 - `.gitignore` - Git ignore rules
 
 ## Installation
 
-Configs are symlinked to home directory:
+Configs are symlinked to the home directory via the Makefile:
 ```bash
-ln -s ~/dotfiles/.zshrc ~/.zshrc
-ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
-ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+make          # link all configs (zsh, tmux, ghostty, herdr)
+make herdr    # link one config (targets: zsh, tmux, ghostty, herdr)
+make unlink   # remove the symlinks
 ```
+Existing regular files are backed up to `<name>.backup` before linking.
 
 After changes, reload with:
 - Zsh: `source ~/.zshrc`
