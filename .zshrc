@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
+export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
+# Java: JDK 11 is the intended default (the generic openjdk keg only exists as a brew dependency)
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"
@@ -138,7 +140,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
-alias C='| pbcopy'
+alias C='pbcopy'
 alias p='cd $(ghq root)/$(ghq list | peco)'
 alias b='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias v='code $(ghq root)/$(ghq list | peco)'
@@ -160,11 +162,8 @@ SAVEHIST=1000000
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
 
-# compelting the command name after sudo command
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
-
-# completing the process name of ps command
-zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
+# completing the process name of ps command (state is the BSD keyword; s is GNU-only)
+zstyle ':completion:*:processes' command 'ps x -o pid,state,args'
 
 # Visible Japanese file name
 setopt print_eight_bit
@@ -224,7 +223,6 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # activate the syntax highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
 [[ -f "$HOME/.local/bin/env" ]] && . "$HOME/.local/bin/env"
 
@@ -233,9 +231,10 @@ export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 _OP_ENV_CACHE="$HOME/.cache/op_env_cache"
 _OP_ENV_TPL="$HOME/src/github.com/nsega/dotfiles/.env.tpl"
 _OP_CACHE_TTL=86400  # 24 hours in seconds
+zmodload -F zsh/stat b:zstat  # mtime check via builtin; external stat is BSD unless coreutils is on PATH
 
 if command -v op &>/dev/null && [[ -f "$_OP_ENV_TPL" ]]; then
-  if [[ -f "$_OP_ENV_CACHE" ]] && (( $(date +%s) - $(stat -c %Y "$_OP_ENV_CACHE") < _OP_CACHE_TTL )); then
+  if [[ -f "$_OP_ENV_CACHE" ]] && (( $(date +%s) - $(zstat +mtime "$_OP_ENV_CACHE") < _OP_CACHE_TTL )); then
     source "$_OP_ENV_CACHE"
   else
     mkdir -p "$(dirname "$_OP_ENV_CACHE")"
@@ -262,20 +261,6 @@ op-reload() {
 
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
-
-# Conda micromamba configuration
-export CONDACONFIGDIR=""
-   cd() { builtin cd "$@" &&
-   if [ -f $PWD/.conda_config ]; then
-       export CONDACONFIGDIR=$PWD
-       micromamba activate $(cat .conda_config)
-   elif [ "$CONDACONFIGDIR" ]; then
-       if [[ $PWD != *"$CONDACONFIGDIR"* ]]; then
-           export CONDACONFIGDIR=""
-           micromamba deactivate
-       fi
-   fi }
-
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
