@@ -1,0 +1,120 @@
+# Herdr configuration
+# https://herdr.dev/docs/configuration/
+#
+# Symlink to the expected location:
+#   mkdir -p ~/.config/herdr
+#   ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+#
+# Reload a running session with `prefix + shift+r` or:
+#   herdr server reload-config
+#
+# View all defaults: herdr --default-config
+# Reset key customizations (with backup): herdr config reset-keys
+
+# ---------------------------------------------------------------------------
+# Keybindings — Ctrl+T prefix, mirroring .tmux.conf muscle memory
+# ---------------------------------------------------------------------------
+# tmux equivalents:
+#   prefix C-t              -> prefix = ctrl+t
+#   bind C-t next-window    -> next_tab includes prefix+ctrl+t
+#   bind v split-window -v  -> split_horizontal (new pane below)  = prefix+v
+#   bind h split-window -h  -> split_vertical   (new pane right)  = prefix+h
+#   bind -n S-left/down/up/right select-pane -> direct shift+arrow focus
+#
+# Note: herdr defaults use prefix+h/j/k/l for pane focus. Since prefix+h is
+# repurposed for splitting (tmux habit), pane focus uses prefix+arrows and
+# direct shift+arrows instead. Config reload is prefix+shift+r (default);
+# prefix+r is resize mode (default), unlike tmux where it reloaded the config.
+
+[keys]
+prefix = "ctrl+t"
+
+# Tabs (tmux "windows")
+next_tab = ["prefix+n", "prefix+ctrl+t"]
+previous_tab = "prefix+p"
+new_tab = "prefix+c"
+
+# Splits (tmux pane splitting: v = below, h = right)
+split_horizontal = ["prefix+v", "prefix+minus"]
+split_vertical = "prefix+h"
+
+# Pane focus (tmux: bind -n S-arrows select-pane)
+focus_pane_left = ["prefix+left", "shift+left"]
+focus_pane_down = ["prefix+down", "shift+down"]
+focus_pane_up = ["prefix+up", "shift+up"]
+focus_pane_right = ["prefix+right", "shift+right"]
+
+# Everything else keeps herdr defaults, e.g.:
+#   detach = prefix+q          zoom = prefix+z         close pane = prefix+x
+#   copy mode = prefix+[       sidebar = prefix+b      workspaces = prefix+w
+#   new workspace = prefix+shift+n                     help = prefix+?
+
+# Open a fresh Claude Code pane in the current working directory
+[[keys.command]]
+key = "prefix+a"
+type = "pane"
+command = "claude"
+description = "new Claude Code pane"
+
+# Example: temporary lazygit pane (closes when lazygit exits)
+# [[keys.command]]
+# key = "prefix+alt+g"
+# type = "pane"
+# command = "lazygit"
+# description = "run lazygit"
+
+# ---------------------------------------------------------------------------
+# Terminal
+# ---------------------------------------------------------------------------
+[terminal]
+default_shell = "zsh"
+# "auto" = login shell on macOS so Homebrew/rbenv/pyenv/nodenv PATH setup runs
+shell_mode = "auto"
+# New panes inherit the source pane's cwd (tmux: -c "#{pane_current_path}")
+new_cwd = "follow"
+
+# ---------------------------------------------------------------------------
+# Theme — follow Ghostty's palette; switch to a built-in later if preferred
+# (catppuccin, tokyo-night, nord, gruvbox, one-dark, solarized, kanagawa, ...)
+# ---------------------------------------------------------------------------
+[theme]
+name = "terminal"
+
+# ---------------------------------------------------------------------------
+# Session persistence (replaces tmux-resurrect / tmux-continuum)
+# ---------------------------------------------------------------------------
+[session]
+# Restart Claude Code (and other supported agents) into their native
+# conversation sessions after a herdr server restart
+resume_agents_on_restore = true
+
+# ---------------------------------------------------------------------------
+# Notifications (replaces tmux bell + allow-passthrough for Claude Code)
+# ---------------------------------------------------------------------------
+[ui.toast]
+# Send finished / needs-input notifications to Ghostty's native notifications
+delivery = "terminal"
+delay_seconds = 1
+
+[ui.sound]
+enabled = true
+
+# ---------------------------------------------------------------------------
+# UI
+# ---------------------------------------------------------------------------
+[ui]
+mouse_capture = true
+confirm_close = true
+
+# ---------------------------------------------------------------------------
+# Scrollback (tmux: history-limit 1000000)
+# ---------------------------------------------------------------------------
+[advanced]
+# ~50 MB per pane (default is ~10 MB)
+scrollback_limit_bytes = 52428800
+
+# ---------------------------------------------------------------------------
+# Git worktrees for parallel agent runs (created from the sidebar)
+# ---------------------------------------------------------------------------
+[worktrees]
+directory = "~/.herdr/worktrees"

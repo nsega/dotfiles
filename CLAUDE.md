@@ -9,8 +9,10 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 ## File Structure
 
 - `.zshrc` - Zsh configuration with Oh My Zsh framework
-- `.tmux.conf` - Tmux configuration (prefix: `Ctrl-T`)
+- `.tmux.conf` - Tmux configuration (prefix: `Ctrl-T`, being replaced by herdr)
 - `ghostty/config` - Ghostty terminal emulator (tmux alternative with native splits)
+- `herdr/config.toml` - Herdr agent multiplexer (tmux replacement, prefix: `Ctrl+T`)
+- `herdr/MIGRATION.md` - tmux → herdr migration plan and learning guide (Japanese)
 - `.env.tpl` - 1Password secret references (safe to commit, no actual secrets)
 - `.gitignore` - Git ignore rules
 
@@ -21,12 +23,14 @@ Configs are symlinked to home directory:
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
+ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 ```
 
 After changes, reload with:
 - Zsh: `source ~/.zshrc`
 - Tmux: `prefix + r` or `tmux source-file ~/.tmux.conf`
 - Ghostty: `Ctrl+T > r` or restart
+- Herdr: `prefix + shift+r` or `herdr server reload-config`
 
 ## Key Configuration Patterns
 
@@ -47,6 +51,14 @@ After changes, reload with:
 - Chord-based keybindings: `ctrl+t>h/j/k/l` for splits (vim-style)
 - Native clipboard integration (no reattach-to-user-namespace needed)
 - Monaco font, 12pt
+
+### Herdr (herdr/config.toml)
+- Agent multiplexer replacing tmux; runs inside Ghostty
+- Prefix: `Ctrl+T` (matching tmux); keybindings mirror `.tmux.conf` (`prefix+v` split below, `prefix+h` split right, `Shift+arrows` pane focus)
+- `prefix+a` opens a new Claude Code pane in the current directory
+- Agent session restore replaces tmux-resurrect/continuum; toast notifications go to Ghostty (`delivery = "terminal"`)
+- Claude Code integration installed via `herdr integration install claude` (writes hook into `~/.claude`)
+- Migration status and learning plan tracked in `herdr/MIGRATION.md`
 
 ## Custom Aliases
 

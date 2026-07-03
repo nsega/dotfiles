@@ -5,8 +5,10 @@ Personal configuration files for macOS (Apple Silicon), optimized for DevOps and
 ## Contents
 
 - **`.zshrc`** - Zsh shell configuration with Oh My Zsh framework
-- **`.tmux.conf`** - Tmux terminal multiplexer configuration
+- **`.tmux.conf`** - Tmux terminal multiplexer configuration (being replaced by herdr)
 - **`ghostty/config`** - Ghostty terminal emulator configuration (tmux alternative)
+- **`herdr/config.toml`** - Herdr agent multiplexer configuration (tmux replacement for Claude Code workflows)
+- **`herdr/MIGRATION.md`** - tmux → herdr migration plan and learning guide
 - **`.env.tpl`** - 1Password secret references (safe to commit, no actual secrets)
 - **`.gitignore`** - Git ignore rules
 
@@ -83,6 +85,23 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
 - **Layout**: 4px window padding, white split divider, inherits working directory
 - **Features**: GPU-accelerated rendering, native split panes, auto-update checks
 
+### Herdr Configuration
+
+[Herdr](https://herdr.dev) is an agent multiplexer — a tmux replacement with built-in awareness of AI coding agent states (Claude Code, Codex, etc.). It runs inside Ghostty. See `herdr/MIGRATION.md` for the migration plan.
+
+- **Prefix**: `Ctrl+T` (matching tmux muscle memory)
+- **Key Bindings** (mirroring `.tmux.conf`):
+  - `Ctrl+T v`: Split below / `Ctrl+T h`: Split right
+  - `Shift+Arrow`: Navigate between panes
+  - `Ctrl+T Ctrl+T` or `Ctrl+T n`: Next tab
+  - `Ctrl+T a`: New Claude Code pane in current directory (custom)
+  - `Ctrl+T ?`: Show all keybindings
+- **Agent Sidebar**: Rolls up every agent to 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle
+- **Session Persistence**: Background server keeps panes alive on detach; Claude Code sessions restore natively after server restarts (replaces tmux-resurrect/continuum)
+- **Notifications**: Agent finished / needs-input toasts delivered to Ghostty, plus sound
+- **Scrollback**: 50 MB per pane
+- **Theme**: Follows the host terminal (Ghostty) palette
+
 ## Secret Management
 
 Secrets are managed via **1Password CLI** (`op`) using a template-based approach with caching:
@@ -128,7 +147,8 @@ op item get "<item-name>" --account=my.1password.com
 ```bash
 # Terminal emulator and multiplexer
 brew install ghostty              # Modern GPU-accelerated terminal (tmux alternative)
-brew install tmux                 # Traditional terminal multiplexer
+brew install herdr                # Agent multiplexer (tmux replacement, https://herdr.dev)
+brew install tmux                 # Traditional terminal multiplexer (legacy)
 brew install peco
 
 # Version managers
@@ -200,6 +220,10 @@ ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 # For Ghostty configuration
 mkdir -p ~/.config/ghostty
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
+
+# For Herdr configuration
+mkdir -p ~/.config/herdr
+ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 ```
 
 4. Install Oh My Zsh (if not already installed):
@@ -260,6 +284,26 @@ source ~/.zshrc
 
 **Configuration:**
 - `Ctrl-T r`: Reload tmux config
+
+### Herdr Commands
+
+**Basic Operations:**
+- Start / re-attach: `herdr` (background server starts automatically)
+- Detach: `Ctrl+T q` (server and agents keep running)
+- List sessions: `herdr session list`
+- Attach named session: `herdr session attach <name>`
+- Remote: `herdr --remote ssh://user@server`
+
+**Claude Code Integration:**
+- Install once: `herdr integration install claude` (enables native session restore and state reporting)
+- `Ctrl+T a`: Open a new Claude Code pane in the current directory
+- Sidebar (`Ctrl+T b`) shows each agent's state: 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle
+- Create Git worktrees from the sidebar to run agents in parallel on one repo
+
+**Configuration:**
+- `Ctrl+T Shift+R` or `herdr server reload-config`: Reload config
+- `herdr --default-config`: Show all defaults
+- See `herdr/MIGRATION.md` for the full tmux → herdr keybinding map and learning plan
 
 ### Ghostty Usage
 
