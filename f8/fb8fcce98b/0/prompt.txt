@@ -1,0 +1,1 @@
+commit ghostty/config because i want to use herdr in ghostty and using prefix-t in herdr instead of ghostty.
