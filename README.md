@@ -10,6 +10,7 @@ Personal configuration files for macOS (Apple Silicon), optimized for DevOps and
 - **`herdr/config.toml`** - Herdr agent multiplexer configuration (tmux replacement for Claude Code workflows)
 - **`herdr/MIGRATION.md`** - tmux → herdr migration plan and learning guide
 - **`Makefile`** - Symlink installer (`make` for everything, `make <name>` for individual configs)
+- **`docs/adr/`** - Architecture Decision Records (e.g. [ADR 0001](docs/adr/0001-dotfiles-symlink-management.md): Makefile symlinks vs. Stow/chezmoi)
 - **`.env.tpl`** - 1Password secret references (safe to commit, no actual secrets)
 - **`.gitignore`** - Git ignore rules
 

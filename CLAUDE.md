@@ -14,6 +14,7 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 - `herdr/config.toml` - Herdr agent multiplexer (tmux replacement, prefix: `Ctrl+T`)
 - `herdr/MIGRATION.md` - tmux → herdr migration plan and learning guide (Japanese)
 - `Makefile` - Symlink installer (`make` = all, `make zsh|tmux|ghostty|herdr` = individual, `make unlink`)
+- `docs/adr/` - Architecture Decision Records (Japanese; e.g. why Makefile symlinks over Stow/chezmoi)
 - `.env.tpl` - 1Password secret references (safe to commit, no actual secrets)
 - `.gitignore` - Git ignore rules
 
