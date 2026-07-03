@@ -85,8 +85,9 @@ Secrets are managed via **1Password CLI** (`op`) using a template-based approach
 
 - `.env.tpl` contains `op://` references (no actual secrets) — safe to commit
 - At shell startup, `op inject` resolves references and caches to `~/.cache/op_env_cache`
-- Cache auto-refreshes every 24 hours — Touch ID prompted once per day
-- Cache created with `umask 077` and cleaned up on shell exit via `EXIT` trap
+- Cache auto-refreshes every 24 hours or when `.env.tpl` changes (Touch ID prompted at most once per day)
+- Cache created with `umask 077`; it persists across shell sessions
+- Do not put unused `op://` references in `.env.tpl`, even commented out: `op inject` resolves references inside comment lines, so the secret still lands in the cache
 - Run `op-reload` to manually refresh secrets
 
 ### Adding a new secret

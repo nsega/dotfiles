@@ -55,10 +55,6 @@ HIST_STAMPS="mm/dd/yyyy"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Uncomment the following line if you want to activate
-# insecure directories you can set the variable
-ZSH_DISABLE_COMPFIX="true"
-
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -234,7 +230,8 @@ _OP_CACHE_TTL=86400  # 24 hours in seconds
 zmodload -F zsh/stat b:zstat  # mtime check via builtin; external stat is BSD unless coreutils is on PATH
 
 if command -v op &>/dev/null && [[ -f "$_OP_ENV_TPL" ]]; then
-  if [[ -f "$_OP_ENV_CACHE" ]] && (( $(date +%s) - $(zstat +mtime "$_OP_ENV_CACHE") < _OP_CACHE_TTL )); then
+  # Reuse the cache only if it is newer than the template and within TTL
+  if [[ -f "$_OP_ENV_CACHE" && "$_OP_ENV_CACHE" -nt "$_OP_ENV_TPL" ]] && (( $(date +%s) - $(zstat +mtime "$_OP_ENV_CACHE") < _OP_CACHE_TTL )); then
     source "$_OP_ENV_CACHE"
   else
     mkdir -p "$(dirname "$_OP_ENV_CACHE")"
@@ -258,9 +255,6 @@ op-reload() {
     echo "Failed to reload 1Password secrets." >&2
   fi
 }
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
