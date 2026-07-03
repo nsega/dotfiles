@@ -38,7 +38,7 @@ After changes, reload with:
 
 ### Zsh (.zshrc)
 - Oh My Zsh plugins: git, brew, gem, aws, docker, golang, tmux, kubectl, kubetail, kube-ps1, terraform
-- Version managers: rbenv, pyenv, nodenv (via eval init commands)
+- Version managers: pyenv (eval init), rbenv (lazy-loaded on first use); Node via volta and bun; pixi on PATH with cached completions
 - Interactive tools: peco + ghq for project navigation
 - GOPATH set to `$HOME`, GOROOT at `/opt/homebrew/opt/go/libexec`
 - Kubernetes context shown in prompt via kube-ps1
