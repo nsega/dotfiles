@@ -55,7 +55,7 @@ After changes, reload with:
 ### Herdr (herdr/config.toml)
 - Agent multiplexer replacing tmux; runs inside Ghostty
 - Prefix: `Ctrl+T` (matching tmux); otherwise herdr default keybindings (`prefix+v` split right, `prefix+minus` split below, `prefix+h/j/k/l` pane focus)
-- Custom bindings: `prefix+up/down` and `prefix+shift+1..9` switch workspaces, `prefix+,`/`prefix+.` cycle agents, `prefix+o` last pane
+- Custom bindings: `prefix+up/down` and `prefix+shift+1..9` switch workspaces, `prefix+,`/`prefix+.` cycle agents, `prefix+o` last pane, `prefix+a` new Claude Code pane
 - Theme: catppuccin; agent labels shown on pane borders; new-tab name prompt disabled
 - Agent session restore replaces tmux-resurrect/continuum; notifications via macOS Notification Center (`delivery = "system"`)
 - Claude Code integration installed via `herdr integration install claude` (writes hook into `~/.claude`)

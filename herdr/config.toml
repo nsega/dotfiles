@@ -37,6 +37,13 @@ next_agent = "prefix+." # optional, unset by default
 switch_workspace = "prefix+shift+1..9"  # optional indexed binding, e.g. "prefix+shift+1..9"
 last_pane = "prefix+o"  # optional, unset by default; bind e.g. "prefix+tab" for global back-and-forth
 
+# Open a fresh Claude Code pane in the current working directory
+[[keys.command]]
+key = "prefix+a"
+type = "pane"
+command = "claude"
+description = "new Claude Code pane"
+
 [ui]
 confirm_close = true
 prompt_new_tab_name = false

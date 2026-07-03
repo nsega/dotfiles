@@ -96,6 +96,7 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
   - `Ctrl+T n` / `Ctrl+T p` / `Ctrl+T 1..9`: Next / previous / jump to tab
   - `Ctrl+T ↑/↓` and `Ctrl+T Shift+1..9`: Switch workspaces (custom)
   - `Ctrl+T ,` / `Ctrl+T .`: Previous / next agent (custom)
+  - `Ctrl+T a`: New Claude Code pane in current directory (custom)
   - `Ctrl+T ?`: Show all keybindings
 - **Agent Sidebar**: Rolls up every agent to 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle; agent labels also shown on pane borders
 - **Session Persistence**: Background server keeps panes alive on detach; Claude Code sessions restore natively after server restarts (replaces tmux-resurrect/continuum)
@@ -296,6 +297,7 @@ source ~/.zshrc
 
 **Claude Code Integration:**
 - Install once: `herdr integration install claude` (enables native session restore and state reporting)
+- `Ctrl+T a`: Open a new Claude Code pane in the current directory
 - Sidebar (`Ctrl+T b`) shows each agent's state: 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle
 - `Ctrl+T ,` / `Ctrl+T .` jump between agents
 - Create Git worktrees from the sidebar to run agents in parallel on one repo
