@@ -89,18 +89,18 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
 
 [Herdr](https://herdr.dev) is an agent multiplexer — a tmux replacement with built-in awareness of AI coding agent states (Claude Code, Codex, etc.). It runs inside Ghostty. See `herdr/MIGRATION.md` for the migration plan.
 
-- **Prefix**: `Ctrl+T` (matching tmux muscle memory)
-- **Key Bindings** (mirroring `.tmux.conf`):
-  - `Ctrl+T v`: Split below / `Ctrl+T h`: Split right
-  - `Shift+Arrow`: Navigate between panes
-  - `Ctrl+T Ctrl+T` or `Ctrl+T n`: Next tab
-  - `Ctrl+T a`: New Claude Code pane in current directory (custom)
+- **Prefix**: `Ctrl+T` (matching tmux muscle memory); other bindings follow herdr defaults
+- **Key Bindings**:
+  - `Ctrl+T v`: Split right / `Ctrl+T -`: Split below
+  - `Ctrl+T h/j/k/l`: Navigate between panes / `Ctrl+T o`: Last pane (custom)
+  - `Ctrl+T n` / `Ctrl+T p` / `Ctrl+T 1..9`: Next / previous / jump to tab
+  - `Ctrl+T ↑/↓` and `Ctrl+T Shift+1..9`: Switch workspaces (custom)
+  - `Ctrl+T ,` / `Ctrl+T .`: Previous / next agent (custom)
   - `Ctrl+T ?`: Show all keybindings
-- **Agent Sidebar**: Rolls up every agent to 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle
+- **Agent Sidebar**: Rolls up every agent to 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle; agent labels also shown on pane borders
 - **Session Persistence**: Background server keeps panes alive on detach; Claude Code sessions restore natively after server restarts (replaces tmux-resurrect/continuum)
-- **Notifications**: Agent finished / needs-input toasts delivered to Ghostty, plus sound
-- **Scrollback**: 50 MB per pane
-- **Theme**: Follows the host terminal (Ghostty) palette
+- **Notifications**: Agent finished / needs-input notifications via macOS Notification Center (`delivery = "system"`), plus sound
+- **Theme**: Catppuccin
 
 ## Secret Management
 
@@ -296,8 +296,8 @@ source ~/.zshrc
 
 **Claude Code Integration:**
 - Install once: `herdr integration install claude` (enables native session restore and state reporting)
-- `Ctrl+T a`: Open a new Claude Code pane in the current directory
 - Sidebar (`Ctrl+T b`) shows each agent's state: 🔴 blocked / 🟡 working / 🔵 done / 🟢 idle
+- `Ctrl+T ,` / `Ctrl+T .` jump between agents
 - Create Git worktrees from the sidebar to run agents in parallel on one repo
 
 **Configuration:**

@@ -29,17 +29,19 @@ herdr
 
 ## キーバインド対応表（prefix: `Ctrl+T`）
 
-tmux の操作感を維持するよう `config.toml` で調整済み。
+prefix は tmux と同じ `Ctrl+T`。それ以外は herdr のデフォルトを採用し、ワークスペース / エージェント移動だけ独自バインドを追加している。
 
 | 操作 | tmux | herdr | 備考 |
 |------|------|-------|------|
 | プレフィックス | `C-t` | `ctrl+t` | 同じ |
-| 次のタブ（window） | `prefix C-t` / — | `prefix+ctrl+t` / `prefix+n` | 同じ |
+| 次のタブ（window） | `prefix C-t` | `prefix+n` | **変更あり** |
 | 前のタブ | — | `prefix+p` | herdr デフォルト |
-| 新しいタブ | `prefix c` | `prefix+c` | 同じ |
-| 下に分割 | `prefix v` | `prefix+v`（`prefix+minus` も可） | 同じ |
-| 右に分割 | `prefix h` | `prefix+h` | 同じ |
-| ペイン移動 | `Shift+矢印` | `Shift+矢印`（`prefix+矢印` も可） | 同じ |
+| 新しいタブ | `prefix c` | `prefix+c` | 同じ（タブ名プロンプトは無効化済み） |
+| タブ切替（番号） | — | `prefix+1..9` | herdr デフォルト |
+| 下に分割 | `prefix v` | `prefix+minus` | **変更あり** |
+| 右に分割 | `prefix h` | `prefix+v` | **変更あり** |
+| ペイン移動 | `Shift+矢印` | `prefix+h/j/k/l` | **変更あり**（vim スタイル） |
+| 直前のペインに戻る | — | `prefix+o` | カスタム（tmux の `prefix o` に近い感覚） |
 | ズーム | — | `prefix+z` | 新規 |
 | ペインを閉じる | — | `prefix+x` | 新規 |
 | コピーモード | `prefix [` | `prefix+[` | vim 操作（`v` 選択 / `y` コピー） |
@@ -47,25 +49,27 @@ tmux の操作感を維持するよう `config.toml` で調整済み。
 | 設定リロード | `prefix r` | `prefix+shift+r` | **変更あり**（`prefix+r` はリサイズモード） |
 | ワークスペース一覧 | — | `prefix+w` | herdr 固有の概念 |
 | 新規ワークスペース | — | `prefix+shift+n` | プロジェクトごとに分ける |
-| サイドバー表示切替 | — | `prefix+b` | エージェント状態一覧 |
-| **Claude Code 新規ペイン** | — | `prefix+a` | カスタムバインド（カレントディレクトリで `claude` 起動） |
+| ワークスペース切替 | — | `prefix+up` / `prefix+down` | カスタム |
+| ワークスペース切替（番号） | — | `prefix+shift+1..9` | カスタム |
+| エージェント間移動 | — | `prefix+,` / `prefix+.` | カスタム（blocked なエージェントへ素早く移動） |
+| サイドバー表示切替 | — | `prefix+b` | エージェント状態一覧（ペイン枠にもラベル表示） |
 | 全キーバインド表示 | `prefix ?` | `prefix+?` | 同じ |
 
 ### tmux 機能の置き換え
 
 | tmux の機能 | herdr での対応 |
 |-------------|----------------|
-| tmux-resurrect / tmux-continuum | サーバ常駐 + `[session] resume_agents_on_restore`（Claude Code はネイティブセッションごと復元） |
-| `history-limit 1000000` | `scrollback_limit_bytes = 50MB` |
-| `allow-passthrough` + bell（Claude Code 完了通知） | `[ui.toast] delivery = "terminal"`（Ghostty ネイティブ通知）+ サウンド |
-| `default-shell /bin/zsh` | `[terminal] default_shell = "zsh"` |
-| `split-window -c "#{pane_current_path}"` | `[terminal] new_cwd = "follow"` |
+| tmux-resurrect / tmux-continuum | サーバ常駐 + エージェントセッション復元（`resume_agents_on_restore`、デフォルト有効。Claude Code はネイティブセッションごと復元） |
+| `history-limit 1000000` | デフォルトのスクロールバック（約 10MB/ペイン）。足りなければ `[advanced] scrollback_limit_bytes` で拡張 |
+| `allow-passthrough` + bell（Claude Code 完了通知） | `[ui.toast] delivery = "system"`（macOS 通知センター）+ サウンド（デフォルト有効） |
+| `default-shell /bin/zsh` | 未設定（`$SHELL` = zsh を使用） |
+| `split-window -c "#{pane_current_path}"` | デフォルト動作（新ペインは元ペインのディレクトリを引き継ぐ） |
 | reattach-to-user-namespace | 不要（ネイティブクリップボード対応） |
 
 ### 注意点
 
 - prefix が `ctrl+t` なので、ペイン内アプリへ素の `Ctrl+T` は届かない（tmux 時代と同条件）。Claude Code の todo 表示トグル（`Ctrl+T`）を使いたい場合は prefix の再検討か直接バインドの追加を検討。
-- Ghostty 側の `shift+arrow` split 移動キーバインドは、herdr 主体になったら **Phase 3 でコメントアウト**する（herdr へのキー到達を妨げるため）。
+- ペイン移動は tmux 時代の `Shift+矢印` から herdr デフォルトの `prefix+h/j/k/l` に変更した。Ghostty 側の `shift+arrow` goto_split バインドは Ghostty 自身の split 用なので、herdr のペイン内 TUI が `Shift+矢印` を必要とする場合はコメントアウトを検討（Phase 3）。
 
 ## 段階的移行プラン
 
@@ -82,22 +86,22 @@ tmux の操作感を維持するよう `config.toml` で調整済み。
 tmux は残したまま、新しい作業を herdr で始める。
 
 - [ ] Ghostty の新しいウィンドウで `herdr` を起動して普段の作業をする
-- [ ] 基本 5 操作を体に入れる: タブ作成 (`prefix+c`) / 分割 (`prefix+v`・`prefix+h`) / ペイン移動 (`Shift+矢印`) / デタッチ (`prefix+q`) / 再アタッチ (`herdr`)
-- [ ] Claude Code を `prefix+a` で起動し、サイドバーの状態表示（🔴🟡🔵🟢）を確認
+- [ ] 基本 5 操作を体に入れる: タブ作成 (`prefix+c`) / 分割 (`prefix+v` 右・`prefix+minus` 下) / ペイン移動 (`prefix+h/j/k/l`) / デタッチ (`prefix+q`) / 再アタッチ (`herdr`)
+- [ ] ペインで `claude` を起動し、サイドバーの状態表示（🔴🟡🔵🟢）とペイン枠のエージェントラベルを確認
 - [ ] `prefix+q` でデタッチ → `herdr` で再アタッチしてセッションが生きていることを確認
 
 ### Phase 2: Claude Code ワークフローの本格化（2 週目）
 
-- [ ] ワークスペースをプロジェクト単位で使い分ける（`prefix+shift+n` / `prefix+w`）
-- [ ] 複数の Claude Code を並列で走らせ、サイドバーで blocked のものから対応する運用を試す
+- [ ] ワークスペースをプロジェクト単位で使い分ける（`prefix+shift+n` / `prefix+w` / `prefix+up`・`prefix+down` / `prefix+shift+1..9`）
+- [ ] 複数の Claude Code を並列で走らせ、`prefix+,`・`prefix+.` で blocked なエージェントから順に対応する運用を試す
 - [ ] サイドバーから Git worktree を作成して、同一リポジトリで並列にエージェントを走らせる
 - [ ] `herdr server stop` → `herdr` でサーバ再起動し、Claude Code セッションが復元されることを確認
-- [ ] 通知（Ghostty toast + サウンド）が完了時に届くことを確認
+- [ ] 通知（macOS 通知センター + サウンド）が完了時に届くことを確認
 
 ### Phase 3: tmux からの卒業（3 週目〜）
 
 - [ ] `.zshrc` に tmux 自動起動があれば herdr に変更（なければスキップ）
-- [ ] Ghostty の `shift+arrow` goto_split キーバインドをコメントアウト（herdr に譲る）
+- [ ] Ghostty の `shift+arrow` goto_split キーバインドが不要になっていればコメントアウト（herdr のペイン内 TUI へキーを渡すため）
 - [ ] リモート運用を試す: `herdr --remote ssh://user@server`
 - [ ] 2 週間問題なければ tmux/TPM 関連のセットアップを新規マシン手順から外す（`.tmux.conf` はリポジトリに残してよい）
 
