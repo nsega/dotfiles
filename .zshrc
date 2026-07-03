@@ -1,7 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$HOME/.krew/bin:/usr/local/sbin:$HOME/bin:/usr/local/bin:$PATH"
-export PATH="$HOME/.pyenv/shims/python:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"
@@ -88,15 +87,14 @@ export PATH=/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH
 export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
 
 # Set the configuration for rbenv and pyenv
-eval "$(rbenv init -)"
-eval "$(pyenv init -)"
+# rbenv is lazy-loaded: shims stay on PATH, the ~100ms init runs on first `rbenv` use
+export PATH="$HOME/.rbenv/shims:$PATH"
+rbenv() { unfunction rbenv; eval "$(command rbenv init - zsh)"; rbenv "$@"; }
+eval "$(pyenv init - zsh)"
 
 # Set the configuration for direnv
 export EDITOR=/usr/bin/vi
 eval "$(direnv hook zsh)"
-
-# Set the configuration for pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -113,8 +111,23 @@ export LANG=en_US.UTF-8
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# Completion sources: everything goes on fpath BEFORE oh-my-zsh so its single
+# compinit picks it all up in one pass (no other compinit call in this file)
+fpath=(/opt/homebrew/share/zsh/site-functions /opt/homebrew/share/zsh-completions $fpath)
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=($HOME/.docker/completions $fpath)
+# End of Docker CLI completions
+
+# stern/pixi completions are cached; regenerated only when the binary is newer
+mkdir -p ~/.zfunc
+fpath=(~/.zfunc $fpath)
+if command -v stern >/dev/null && [[ ! ~/.zfunc/_stern -nt ${commands[stern]} ]]; then
+  stern --completion=zsh > ~/.zfunc/_stern
+fi
+if command -v pixi >/dev/null && [[ ! ~/.zfunc/_pixi -nt ${commands[pixi]} ]]; then
+  pixi completion --shell zsh > ~/.zfunc/_pixi
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # Custom aliases (after oh-my-zsh to override its defaults)
@@ -199,28 +212,15 @@ zle -N peco-checkout-pull-request
 
 bindkey "^g^p" peco-checkout-pull-request
 
-autoload -U compinit compdef
-compinit
-
 # install the shell completions of google-cloud-sdk
 source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 # add gcloud components of google-cloud-sdk to my PATH
 source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source <(kubectl completion zsh)
-source <(stern --completion=zsh)
+# kubectl completion comes from the oh-my-zsh kubectl plugin (cached, async);
+# stern completion is cached in ~/.zfunc above
 
 # activate the autosuggestions
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# activate zsh-completions
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$(brew --prefix)/share/zsh-completions:$FPATH
-
-  autoload -Uz compinit
-  compinit
-fi
-
-eval "$(pixi completion --shell zsh)"
 
 # activate the syntax highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -262,11 +262,6 @@ op-reload() {
 
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=($HOME/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
 
 # Conda micromamba configuration
 export CONDACONFIGDIR=""
@@ -284,3 +279,6 @@ export CONDACONFIGDIR=""
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# opencode
+export PATH=/Users/naokisega/.opencode/bin:$PATH
