@@ -5,6 +5,7 @@
 #   make tmux       # link only .tmux.conf
 #   make ghostty    # link only ghostty/config
 #   make herdr      # link only herdr/config.toml
+#   make claude     # link only claude/ (Claude Code user config)
 #   make unlink     # remove all symlinks created by this Makefile
 #   make help       # show this list
 #
@@ -27,9 +28,9 @@ define unlink
 	@if [ -L "$(2)" ]; then rm "$(2)"; echo "unlink: $(2)"; fi
 endef
 
-.PHONY: all zsh tmux ghostty herdr unlink help
+.PHONY: all zsh tmux ghostty herdr claude unlink help
 
-all: zsh tmux ghostty herdr
+all: zsh tmux ghostty herdr claude
 
 zsh:
 	$(call link,$(DOTFILES_DIR)/.zshrc,$(HOME)/.zshrc)
@@ -45,11 +46,24 @@ herdr:
 	@mkdir -p "$(HOME)/.config/herdr"
 	$(call link,$(DOTFILES_DIR)/herdr/config.toml,$(HOME)/.config/herdr/config.toml)
 
+# Link individual entries only — never symlink ~/.claude itself, because
+# Claude Code writes runtime data there (sessions, auth, plugins, memory).
+claude:
+	@mkdir -p "$(HOME)/.claude"
+	$(call link,$(DOTFILES_DIR)/claude/settings.json,$(HOME)/.claude/settings.json)
+	$(call link,$(DOTFILES_DIR)/claude/CLAUDE.md,$(HOME)/.claude/CLAUDE.md)
+	$(call link,$(DOTFILES_DIR)/claude/skills,$(HOME)/.claude/skills)
+	$(call link,$(DOTFILES_DIR)/claude/hooks,$(HOME)/.claude/hooks)
+
 unlink:
 	$(call unlink,,$(HOME)/.zshrc)
 	$(call unlink,,$(HOME)/.tmux.conf)
 	$(call unlink,,$(HOME)/.config/ghostty/config)
 	$(call unlink,,$(HOME)/.config/herdr/config.toml)
+	$(call unlink,,$(HOME)/.claude/settings.json)
+	$(call unlink,,$(HOME)/.claude/CLAUDE.md)
+	$(call unlink,,$(HOME)/.claude/skills)
+	$(call unlink,,$(HOME)/.claude/hooks)
 
 help:
 	@sed -n 's/^#   //p' $(MAKEFILE_LIST)

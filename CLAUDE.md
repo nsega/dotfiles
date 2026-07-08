@@ -13,7 +13,9 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 - `ghostty/config` - Ghostty terminal emulator (tmux alternative with native splits)
 - `herdr/config.toml` - Herdr agent multiplexer (tmux replacement, prefix: `Ctrl+T`)
 - `herdr/MIGRATION.md` - tmux → herdr migration plan and learning guide (Japanese)
-- `Makefile` - Symlink installer (`make` = all, `make zsh|tmux|ghostty|herdr` = individual, `make unlink`)
+- `claude/` - Claude Code user-level config, symlinked into `~/.claude/` (settings.json, CLAUDE.md, skills/, hooks/)
+- `.claude/` - Claude Code project-level config for this repo (Entire hooks in settings.json, `/adr` skill)
+- `Makefile` - Symlink installer (`make` = all, `make zsh|tmux|ghostty|herdr|claude` = individual, `make unlink`)
 - `docs/adr/` - Architecture Decision Records (Japanese; e.g. why Makefile symlinks over Stow/chezmoi)
 - `.env.tpl` - 1Password secret references (safe to commit, no actual secrets)
 - `.gitignore` - Git ignore rules
@@ -22,8 +24,8 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 
 Configs are symlinked to the home directory via the Makefile:
 ```bash
-make          # link all configs (zsh, tmux, ghostty, herdr)
-make herdr    # link one config (targets: zsh, tmux, ghostty, herdr)
+make          # link all configs (zsh, tmux, ghostty, herdr, claude)
+make herdr    # link one config (targets: zsh, tmux, ghostty, herdr, claude)
 make unlink   # remove the symlinks
 ```
 Existing regular files are backed up to `<name>.backup` before linking.
@@ -33,6 +35,7 @@ After changes, reload with:
 - Tmux: `prefix + r` or `tmux source-file ~/.tmux.conf`
 - Ghostty: `Ctrl+T > r` or restart
 - Herdr: `prefix + shift+r` or `herdr server reload-config`
+- Claude Code: takes effect on the next session
 
 ## Key Configuration Patterns
 
@@ -62,6 +65,15 @@ After changes, reload with:
 - Agent session restore replaces tmux-resurrect/continuum; notifications via macOS Notification Center (`delivery = "system"`)
 - Claude Code integration installed via `herdr integration install claude` (writes hook into `~/.claude`)
 - Migration status and learning plan tracked in `herdr/MIGRATION.md`
+
+### Claude Code (claude/ and .claude/)
+- `claude/` holds **user-level** config, symlinked into `~/.claude/` via `make claude`. Individual entries are linked (never `~/.claude` itself — Claude Code writes runtime data there: sessions, auth, plugins, memory)
+- `claude/settings.json` — global permissions (allow read-only git/kubectl/terraform commands; ask on push/apply/delete; deny reading the op secret cache and `op read`) and hooks
+- `claude/hooks/notify.sh` — Notification hook → macOS Notification Center (complements herdr's agent notifications)
+- `claude/hooks/secret-scan.sh` — PostToolUse (Edit|Write) hook → gitleaks scan at edit time, before the pre-commit hook
+- `claude/CLAUDE.md` — global user memory (Japanese replies / English code, macOS environment, kubectl/terraform context checks)
+- `claude/skills/` — user-level skills: `/op-secret` (add a 1Password secret), `/dotfiles-reload` (reload changed configs)
+- `.claude/` (project scope) keeps this repo's Entire hooks in `settings.json` and the `/adr` skill for writing ADRs into `docs/adr/`
 
 ## Custom Aliases
 

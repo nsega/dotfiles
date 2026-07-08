@@ -9,6 +9,8 @@ Personal configuration files for macOS (Apple Silicon), optimized for DevOps and
 - **`ghostty/config`** - Ghostty terminal emulator configuration (tmux alternative)
 - **`herdr/config.toml`** - Herdr agent multiplexer configuration (tmux replacement for Claude Code workflows)
 - **`herdr/MIGRATION.md`** - tmux → herdr migration plan and learning guide
+- **`claude/`** - Claude Code user-level configuration, symlinked into `~/.claude/` (settings, global memory, skills, hooks)
+- **`.claude/`** - Claude Code project-level configuration for this repository (Entire hooks, `/adr` skill)
 - **`Makefile`** - Symlink installer (`make` for everything, `make <name>` for individual configs)
 - **`docs/adr/`** - Architecture Decision Records (e.g. [ADR 0001](docs/adr/0001-dotfiles-symlink-management.md): Makefile symlinks vs. Stow/chezmoi)
 - **`.env.tpl`** - 1Password secret references (safe to commit, no actual secrets)
@@ -104,6 +106,20 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
 - **Session Persistence**: Background server keeps panes alive on detach; Claude Code sessions restore natively after server restarts (replaces tmux-resurrect/continuum)
 - **Notifications**: Agent finished / needs-input notifications via macOS Notification Center (`delivery = "system"`), plus sound
 - **Theme**: Catppuccin
+
+### Claude Code Configuration
+
+User-level Claude Code config lives in `claude/` and is symlinked into `~/.claude/` (`make claude`). Individual entries are linked — never `~/.claude` itself, since Claude Code writes runtime data there (sessions, auth, plugins, memory).
+
+- **`claude/settings.json`** - Global settings:
+  - *Permissions*: read-only git/kubectl/terraform/aws commands pre-approved; `git push` / `kubectl apply|delete` / `terraform apply|destroy` always ask; reading the 1Password secret cache and `op read` denied
+  - *Hooks*: `Notification` → macOS Notification Center (`hooks/notify.sh`); `PostToolUse` on Edit/Write → gitleaks secret scan at edit time (`hooks/secret-scan.sh`)
+- **`claude/CLAUDE.md`** - Global user memory: Japanese replies / English code and commits, macOS (Apple Silicon) environment, always verify kubectl/terraform context before mutating, 1Password secret rules
+- **`claude/skills/`** - Custom slash commands available in every project:
+  - `/op-secret` - add a new secret via the 1Password `.env.tpl` workflow
+  - `/dotfiles-reload` - detect changed dotfiles and reload (or explain how to reload) each one
+- **`.claude/skills/adr/`** (project scope) - `/adr` creates a new Architecture Decision Record in `docs/adr/` following the existing format
+- **`.claude/settings.json`** (project scope) - Entire session-tracking hooks for this repository
 
 ## Secret Management
 
@@ -224,6 +240,7 @@ make zsh        # .zshrc
 make tmux       # .tmux.conf
 make ghostty    # ghostty/config
 make herdr      # herdr/config.toml
+make claude     # claude/ -> ~/.claude/ (settings, memory, skills, hooks)
 
 make unlink     # remove all symlinks created by the Makefile
 make help       # show available targets
