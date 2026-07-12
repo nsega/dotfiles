@@ -44,6 +44,14 @@ type = "pane"
 command = "claude"
 description = "new Claude Code pane"
 
+# Jump to the next agent that needs attention (status blocked or done).
+# Repeated presses cycle through all matching agents.
+[[keys.command]]
+key = "prefix+shift+u"
+type = "shell"
+command = "~/.local/bin/herdr-focus-attention"
+description = "focus next blocked/done agent"
+
 [ui]
 confirm_close = true
 prompt_new_tab_name = false

@@ -42,14 +42,16 @@ ghostty:
 	$(call link,$(DOTFILES_DIR)/ghostty/config,$(HOME)/.config/ghostty/config)
 
 herdr:
-	@mkdir -p "$(HOME)/.config/herdr"
+	@mkdir -p "$(HOME)/.config/herdr" "$(HOME)/.local/bin"
 	$(call link,$(DOTFILES_DIR)/herdr/config.toml,$(HOME)/.config/herdr/config.toml)
+	$(call link,$(DOTFILES_DIR)/herdr/bin/herdr-focus-attention,$(HOME)/.local/bin/herdr-focus-attention)
 
 unlink:
 	$(call unlink,,$(HOME)/.zshrc)
 	$(call unlink,,$(HOME)/.tmux.conf)
 	$(call unlink,,$(HOME)/.config/ghostty/config)
 	$(call unlink,,$(HOME)/.config/herdr/config.toml)
+	$(call unlink,,$(HOME)/.local/bin/herdr-focus-attention)
 
 help:
 	@sed -n 's/^#   //p' $(MAKEFILE_LIST)

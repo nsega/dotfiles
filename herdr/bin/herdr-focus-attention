@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Focus the next herdr agent whose status is blocked or done.
+# Repeated presses cycle through all matching agents in pane-list order.
+# Shows a notification when no agent needs attention.
+set -euo pipefail
+
+target=$(herdr pane list | python3 -c '
+import json, sys
+
+panes = json.load(sys.stdin)["result"]["panes"]
+hits = [p for p in panes if p.get("agent_status") in ("blocked", "done")]
+if not hits:
+    sys.exit(1)
+
+focused = next((p["terminal_id"] for p in panes if p.get("focused")), None)
+ids = [p["terminal_id"] for p in hits]
+if focused in ids:
+    print(ids[(ids.index(focused) + 1) % len(ids)])
+else:
+    print(ids[0])
+') || {
+    herdr notification show "herdr" --body "No blocked or done agents" >/dev/null 2>&1 || true
+    exit 0
+}
+
+herdr agent focus "$target"
