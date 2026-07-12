@@ -1,0 +1,14 @@
+want to create the shell script to focus on the agents the status of which is either blocked/done in herdr.
+After that, want to map this script to prefix+U in herdr configuration.
+
+---
+
+should i create the bin folder under the herdr direcotry?
+
+---
+
+~/.config/herdr/bin/ sounds like awkward, configuration has the bin directory.
+
+---
+
+how can i verify this configuration
