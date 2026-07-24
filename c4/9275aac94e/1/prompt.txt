@@ -1,0 +1,5 @@
+When it comes to herdr, I noticed that prefix+t+shift+u focus next/blcoked agent didn't work suddenly. Can you look into the direct cause and root cause?
+
+---
+
+yes, apply it.

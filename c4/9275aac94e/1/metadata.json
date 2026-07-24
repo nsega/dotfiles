@@ -1,0 +1,128 @@
+{
+  "cli_version": "0.7.3",
+  "checkpoint_id": "c49275aac94e",
+  "session_id": "58911b68-137b-4d67-a4ea-011cd63578e5",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-24T03:16:20.533604Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "herdr/bin/herdr-focus-attention"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5",
+  "turn_id": "1ac4a58e4084",
+  "token_usage": {
+    "input_tokens": 51,
+    "cache_creation_tokens": 125477,
+    "cache_read_tokens": 1790694,
+    "output_tokens": 13835,
+    "api_call_count": 27
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01MfxKQfVZueTWvwY34oafgz",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:systematic-debugging"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "1ac4a58e4084",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 21,
+        "end": 22,
+        "entry_ids": [
+          "ca592fb5-963e-4b2b-b765-f26f62885995"
+        ],
+        "tool_use_id": "toolu_01MfxKQfVZueTWvwY34oafgz"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01MfxKQfVZueTWvwY34oafgz"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:systematic-debugging",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01QTj2ACvBMWKmqLCDTDQBNd",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "herdr"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "1ac4a58e4084",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 61,
+        "end": 62,
+        "entry_ids": [
+          "1eea2725-02ac-48e4-a6b4-def229407f15"
+        ],
+        "tool_use_id": "toolu_01QTj2ACvBMWKmqLCDTDQBNd"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01QTj2ACvBMWKmqLCDTDQBNd"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: herdr",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-24T03:16:20.527501Z",
+    "agent_lines": 2,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2,
+    "total_lines_changed": 4,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 6,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "herdr/config.toml": 6
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 8,
+      "agent_lines_removed": 2
+    }
+  ]
+}
