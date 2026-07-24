@@ -12,8 +12,8 @@ hits = [p for p in panes if p.get("agent_status") in ("blocked", "done")]
 if not hits:
     sys.exit(1)
 
-focused = next((p["terminal_id"] for p in panes if p.get("focused")), None)
-ids = [p["terminal_id"] for p in hits]
+focused = next((p["pane_id"] for p in panes if p.get("focused")), None)
+ids = [p["pane_id"] for p in hits]
 if focused in ids:
     print(ids[(ids.index(focused) + 1) % len(ids)])
 else:
