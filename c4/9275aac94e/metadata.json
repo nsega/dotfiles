@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.3",
+  "checkpoint_id": "c49275aac94e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "herdr/bin/herdr-focus-attention"
+  ],
+  "sessions": [
+    {
+      "metadata": "/c4/9275aac94e/0/metadata.json",
+      "transcript": "/c4/9275aac94e/0/full.jsonl",
+      "content_hash": "/c4/9275aac94e/0/content_hash.txt",
+      "prompt": "/c4/9275aac94e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 6,
+    "cache_creation_tokens": 47438,
+    "cache_read_tokens": 94604,
+    "output_tokens": 130,
+    "api_call_count": 3
+  }
+}

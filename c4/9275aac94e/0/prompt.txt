@@ -1,0 +1,5 @@
+Reply with exactly: hi. Nothing else.
+
+---
+
+Run the shell command 'echo test' using the Bash tool.
