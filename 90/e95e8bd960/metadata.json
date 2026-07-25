@@ -3,7 +3,7 @@
   "checkpoint_id": "90e95e8bd960",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
     "herdr/config.toml"
   ],
@@ -13,13 +13,19 @@
       "transcript": "/90/e95e8bd960/0/full.jsonl",
       "content_hash": "/90/e95e8bd960/0/content_hash.txt",
       "prompt": "/90/e95e8bd960/0/prompt.txt"
+    },
+    {
+      "metadata": "/90/e95e8bd960/1/metadata.json",
+      "transcript": "/90/e95e8bd960/1/full.jsonl",
+      "content_hash": "/90/e95e8bd960/1/content_hash.txt",
+      "prompt": "/90/e95e8bd960/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 6,
-    "cache_creation_tokens": 47438,
-    "cache_read_tokens": 94604,
-    "output_tokens": 130,
-    "api_call_count": 3
+    "input_tokens": 13,
+    "cache_creation_tokens": 131598,
+    "cache_read_tokens": 342189,
+    "output_tokens": 1145,
+    "api_call_count": 7
   }
 }
