@@ -59,3 +59,9 @@ show_agent_labels_on_pane_borders = true
 
 [ui.toast]
 delivery = "system"
+
+[experimental]
+# Save recent pane screen history across full server restarts.
+# Caution: persists on-screen output (potentially secrets) to disk,
+# same sensitivity as shell history.
+pane_history = true
