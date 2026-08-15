@@ -157,10 +157,10 @@ zle -N peco-checkout-pull-request
 
 bindkey "^g^p" peco-checkout-pull-request
 
-# install the shell completions of google-cloud-sdk
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-# add gcloud components of google-cloud-sdk to my PATH
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+# install the shell completions of gcloud-cli (was the google-cloud-sdk cask)
+source "/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc"
+# add gcloud components of gcloud-cli to my PATH
+source "/opt/homebrew/share/google-cloud-sdk/path.zsh.inc"
 # kubectl completion comes from the oh-my-zsh kubectl plugin (cached, async);
 # stern completion is cached in ~/.zfunc above
 
