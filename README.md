@@ -9,7 +9,9 @@ Personal configuration files for macOS (Apple Silicon), optimized for DevOps and
 - **`ghostty/config`** - Ghostty terminal emulator configuration (tmux alternative)
 - **`herdr/config.toml`** - Herdr agent multiplexer configuration (tmux replacement for Claude Code workflows)
 - **`herdr/MIGRATION.md`** - tmux → herdr migration plan and learning guide
-- **`Makefile`** - Symlink installer (`make` for everything, `make <name>` for individual configs)
+- **`claude/`** - Claude Code user-level configuration (skills and hooks linked into `~/.claude/`, `CLAUDE.md` imported, `settings.json` kept as a reference)
+- **`.claude/`** - Claude Code project-level configuration for this repository (Entire hooks, `/adr` skill)
+- **`Makefile`** - Symlink installer (`make` for zsh/tmux/ghostty/herdr, `make <name>` for individual configs, `make claude` for Claude Code)
 - **`docs/adr/`** - Architecture Decision Records (e.g. [ADR 0001](docs/adr/0001-dotfiles-symlink-management.md): Makefile symlinks vs. Stow/chezmoi)
 - **`.env.tpl`** - 1Password secret references (safe to commit, no actual secrets)
 - **`.gitignore`** - Git ignore rules
@@ -104,6 +106,30 @@ Modern GPU-accelerated terminal emulator with native multiplexing (alternative t
 - **Session Persistence**: Background server keeps panes alive on detach; Claude Code sessions restore natively after server restarts (replaces tmux-resurrect/continuum)
 - **Notifications**: Agent finished / needs-input notifications via macOS Notification Center (`delivery = "system"`), plus sound
 - **Theme**: Catppuccin
+
+### Claude Code Configuration
+
+User-level Claude Code config lives in `claude/`. `~/.claude/` itself belongs to Claude Code, herdr and you (sessions, auth, plugins, memory, `settings.json`, other skills and hooks), so `make claude` only adds to it and never moves or replaces your `settings.json`, `CLAUDE.md`, `skills/` or `hooks/`:
+
+- **Skills and hooks** are linked one entry at a time: `~/.claude/skills/op-secret -> <repo>/claude/skills/op-secret`, `~/.claude/hooks/notify.sh -> <repo>/claude/hooks/notify.sh`, and so on. Your other skills and hooks (for example herdr's `herdr-agent-state.sh`) stay where they are.
+- **`CLAUDE.md`** is not linked. `make claude` appends one import line, `@~/src/github.com/nsega/dotfiles/claude/CLAUDE.md` (the path follows wherever the repo is cloned), to your real `~/.claude/CLAUDE.md`, creating the file if needed. Running it again adds nothing.
+- **`settings.json`** is not linked or written at all. `claude/settings.json` is a reference copy: run `make claude-settings-diff` (read-only, needs `jq`) to see how your `~/.claude/settings.json` differs, then merge the entries you want by hand.
+- If a real file or directory already sits where a skill or hook link goes, it is moved to `<name>.backup.YYYYmmddHHMMSS` first. Backups are never overwritten or nested.
+- If `~/.claude/skills`, `~/.claude/hooks` or `~/.claude/CLAUDE.md` is itself a symlink, `make claude` stops with an error instead of writing through it.
+- `make unlink` removes only the skill and hook links that point into this repo. It leaves backups and the import line in place (delete that line by hand to stop importing).
+
+Write-through boundary: the skill directories and hook scripts are the only links from `~/.claude/` into this repo, so editing them edits tracked files here, which is intended. Everything Claude Code, herdr or you write anywhere else under `~/.claude/` (settings changes, `herdr integration install claude`, new skills, memory edits) lands in real files outside the repo.
+
+- **`claude/settings.json`** - Reference global settings:
+  - *Permissions*: read-only git/kubectl/terraform/aws commands pre-approved; `git push` / `kubectl apply|delete` / `terraform apply|destroy` always ask; reading the 1Password secret cache, `op read` and `kubectl get secret(s)` denied
+  - *Hooks*: `Notification` → macOS Notification Center (`hooks/notify.sh`); `PostToolUse` on Edit/Write → gitleaks secret scan at edit time (`hooks/secret-scan.sh`)
+  - *Limit of the Secret deny*: Claude Code matches these rules by command prefix. `Bash(kubectl get secret:*)` and `Bash(kubectl get secrets:*)` only catch the resource name directly after `get`. A form with flags first, such as `kubectl get -n x secret y` or `kubectl get -o yaml secret y`, does not match the deny but does match the `Bash(kubectl get:*)` allow, so it runs without a prompt. Treat the deny as a guard against the common form, not a boundary; RBAC that withholds `get secrets` from your everyday contexts is the real control.
+- **`claude/CLAUDE.md`** - Additions imported into your global memory: Japanese replies / English code and commits, macOS (Apple Silicon) environment, always verify kubectl/terraform context before mutating, 1Password secret rules
+- **`claude/skills/`** - Custom slash commands available in every project:
+  - `/op-secret` - add a new secret via the 1Password `.env.tpl` workflow
+  - `/dotfiles-reload` - detect changed dotfiles and reload (or explain how to reload) each one
+- **`.claude/skills/adr/`** (project scope) - `/adr` creates a new Architecture Decision Record in `docs/adr/` following the existing format
+- **`.claude/settings.json`** (project scope) - Entire session-tracking hooks for this repository
 
 ## Secret Management
 
@@ -217,13 +243,17 @@ mv ~/.tmux.conf ~/.tmux.conf.backup
 
 3. Create symlinks via the Makefile (existing regular files are backed up to `<name>.backup` first):
 ```bash
-make            # link everything (default)
+make            # link zsh, tmux, ghostty and herdr (default)
 
 # Or link configs individually:
 make zsh        # .zshrc
 make tmux       # .tmux.conf
 make ghostty    # ghostty/config
 make herdr      # herdr/config.toml
+
+# Claude Code is opt-in (see "Claude Code Configuration"):
+make claude                # link skills and hooks, import claude/CLAUDE.md
+make claude-settings-diff  # compare ~/.claude/settings.json with claude/settings.json
 
 make unlink     # remove all symlinks created by the Makefile
 make help       # show available targets
