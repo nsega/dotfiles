@@ -13,7 +13,9 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 - `ghostty/config` - Ghostty terminal emulator (tmux alternative with native splits)
 - `herdr/config.toml` - Herdr agent multiplexer (tmux replacement, prefix: `Ctrl+T`)
 - `herdr/MIGRATION.md` - tmux → herdr migration plan and learning guide (Japanese)
-- `Makefile` - Symlink installer (`make` = all, `make zsh|tmux|ghostty|herdr` = individual, `make unlink`)
+- `claude/` - Claude Code user-level config installed into `~/.claude/` by `make claude` (skills/ and hooks/ linked per entry, CLAUDE.md imported, settings.json reference only)
+- `.claude/` - Claude Code project-level config for this repo (Entire hooks in settings.json, `/adr` skill)
+- `Makefile` - Symlink installer (`make` = zsh, tmux, ghostty, herdr; `make zsh|tmux|ghostty|herdr|claude` = individual; `make claude-settings-diff`; `make unlink`)
 - `docs/adr/` - Architecture Decision Records (Japanese; e.g. why Makefile symlinks over Stow/chezmoi)
 - `.env.tpl` - 1Password secret references (safe to commit, no actual secrets)
 - `.gitignore` - Git ignore rules
@@ -22,17 +24,20 @@ Personal dotfiles for macOS (Apple Silicon), focused on DevOps/cloud engineering
 
 Configs are symlinked to the home directory via the Makefile:
 ```bash
-make          # link all configs (zsh, tmux, ghostty, herdr)
-make herdr    # link one config (targets: zsh, tmux, ghostty, herdr)
+make          # link zsh, tmux, ghostty, herdr (claude is opt-in)
+make herdr    # link one config (targets: zsh, tmux, ghostty, herdr, claude)
 make unlink   # remove the symlinks
 ```
-Existing regular files are backed up to `<name>.backup` before linking.
+Existing regular files are backed up to `<name>.backup` before linking (`make claude` uses `<name>.backup.YYYYmmddHHMMSS`).
+
+When testing Makefile changes, never run `make` or `make claude` against the real `$HOME`: use a scratch `HOME` (`HOME=$(mktemp -d) make claude`) and check `git status` afterwards, since a link that resolves into this repo turns writes under `$HOME` into edits of tracked files.
 
 After changes, reload with:
 - Zsh: `source ~/.zshrc`
 - Tmux: `prefix + r` or `tmux source-file ~/.tmux.conf`
 - Ghostty: `Ctrl+T > r` or restart
 - Herdr: `prefix + shift+r` or `herdr server reload-config`
+- Claude Code: takes effect on the next session (`claude/settings.json` changes must be merged into `~/.claude/settings.json` by hand)
 
 ## Key Configuration Patterns
 
@@ -62,6 +67,17 @@ After changes, reload with:
 - Agent session restore replaces tmux-resurrect/continuum; notifications via macOS Notification Center (`delivery = "system"`)
 - Claude Code integration installed via `herdr integration install claude` (writes hook into `~/.claude`)
 - Migration status and learning plan tracked in `herdr/MIGRATION.md`
+
+### Claude Code (claude/ and .claude/)
+- `claude/` holds **user-level** config. `make claude` never links `~/.claude`, `settings.json`, `CLAUDE.md`, `skills/` or `hooks/` as a whole, because Claude Code, herdr and the user write there (sessions, auth, plugins, memory, settings, herdr's hook script)
+- `make claude` links each `claude/skills/<name>` and `claude/hooks/*.sh` individually, backs up anything already in the way to `<name>.backup.<timestamp>`, refuses to run if `~/.claude/skills`, `~/.claude/hooks` or `~/.claude/CLAUDE.md` is a symlink, and appends `@~/<repo path>/claude/CLAUDE.md` to the real `~/.claude/CLAUDE.md` once
+- The skill and hook links are the only paths from `~/.claude/` into this repo; keep it that way so runtime writes never land in tracked files
+- `claude/settings.json`: reference global permissions (allow read-only git/kubectl/terraform commands; ask on push/apply/delete; deny reading the op secret cache, `op read` and `kubectl get secret(s)`) and hooks. Never installed; `make claude-settings-diff` prints a read-only comparison. The Secret deny is prefix-based, so `kubectl get -n x secret y` still matches the `kubectl get:*` allow
+- `claude/hooks/notify.sh`: Notification hook → macOS Notification Center (complements herdr's agent notifications)
+- `claude/hooks/secret-scan.sh`: PostToolUse (Edit|Write) hook → gitleaks scan at edit time, before the pre-commit hook
+- `claude/CLAUDE.md`: imported additions to the user's global memory (Japanese replies / English code, macOS environment, kubectl/terraform context checks). Add only what `~/.claude/CLAUDE.md` does not already say, and never contradict it
+- `claude/skills/`: `/op-secret` (add a 1Password secret), `/dotfiles-reload` (reload changed configs)
+- `.claude/` (project scope) keeps this repo's Entire hooks in `settings.json` and the `/adr` skill for writing ADRs into `docs/adr/`
 
 ## Custom Aliases
 
